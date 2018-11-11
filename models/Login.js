@@ -7,10 +7,7 @@ import editInput from '../components/input';
 export default class Login extends React.Component{
   static navigationOptions={
     header: null
-
   };
-
-
 loginUser=(email,password) =>{
   const{navigate}=this.props.navigation;
   firebase.auth().signInWithEmailAndPassword(email.trim(),password).then(function(){

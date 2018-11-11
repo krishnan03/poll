@@ -15,12 +15,16 @@
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-button": "^2.3.0",
+    "react-native-calendars": "^1.21.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^1.0.0-beta7",
     "react-native-firebase-phone-auth": "^1.0.4",
+    "react-native-material-dropdown": "^0.11.1",
     "react-native-modal": "^7.0.0",
     "react-native-modalbox": "^1.6.0",
     "react-native-navigation": "^2.1.2",
     "react-native-radio-buttons-group": "^1.0.7",
+    "react-native-simple-radio-button": "^2.7.3",
     "react-navigation": "^1.6.1",
     "react-navigation-tabs": "^0.8.4"
   }

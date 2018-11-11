@@ -12,11 +12,8 @@ export default class Signup extends React.Component{
 
   static navigationOptions={
     title: 'Register New User',
-
+    
   };
-
-
-
   signUpUser=(email,password,cpassword) =>{
     if(password.length >5 && cpassword.length >5){
     if(password==cpassword){
@@ -73,7 +70,7 @@ export default class Signup extends React.Component{
           </Button>
 
         </Form>
-  
+
 
     );
   }
