@@ -10,7 +10,6 @@ import { Icon } from 'react-native-elements'
 class forgotPassword extends React.Component{
   static navigationOptions={
     title: 'Forgot Password',
-    headerLeft:null
 
   };
   resetPassword=(email) =>{
@@ -43,13 +42,7 @@ class forgotPassword extends React.Component{
             onPress={()=> this.resetPassword(this.state.email)}>
             <Text style={{color:'white'}}>Reset</Text>
           </Button>
-          <Icon
-  reverse
-  name='arrow-back'
-  type='AntDesign'
-  color='#517fa4'
-onPress={()=> navigate('Login')}
-/>
+
         </Form>
       </Container>
     );

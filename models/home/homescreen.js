@@ -1,35 +1,31 @@
-import React, { Component ,Keyboard} from 'react';
-import {Container,Content,Header,Form,Input,Item,Button,Label} from 'native-base';
-import {StyleSheet, Text,View,BackHandler} from 'react-native';
-import {StackNavigator} from 'react-navigation';
-import firebase from '../../firebase/firebase'
-import input from '../../components/input'
-import { Icon } from 'react-native-elements'
-
-
-export default class HomeScreen extends React.Component{
-
-  static navigationOptions={
-    header:null
-  };
-
-
-  render(){
-    let paramfromCategoryScreen = this.props.navigation.state.params;
-    const {navigate} = this.props.navigation;
-
-    return(
-      <Container style={styles.container}>
-        <Text>Welcome to HomeScreen</Text>
-      </Container>
+import React from 'react';
+import { Text, View } from 'react-native';
+import { TabNavigator } from 'react-navigation';
+import PollScreen from '../poll/poll';
+import ProfileScreen from '../profile/profile';
+import SearchScreen from '../search/search';
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Home!</Text>
+      </View>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    padding:10
-  },
+
+
+
+
+
+var MainScreenNavigator=TabNavigator({
+  Home:{screen: HomeScreen},
+  Profile:{screen: ProfileScreen},
+  Poll:{screen: PollScreen},
+  Search:{screen: SearchScreen},
+},{
+  tabBarPosition:'bottom'
 });
+
+
+export default MainScreenNavigator;
