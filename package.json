@@ -23,6 +23,7 @@
     "react-native-modal": "^7.0.0",
     "react-native-modalbox": "^1.6.0",
     "react-native-navigation": "^2.1.2",
+    "react-native-picker": "^4.3.7",
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-simple-radio-button": "^2.7.3",
     "react-navigation": "^1.6.1",

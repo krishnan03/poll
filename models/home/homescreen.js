@@ -33,9 +33,6 @@ class HomeScreen extends React.Component {
 }
 
 
-
-
-
 var MainScreenNavigator=TabNavigator({
   Home:{screen: HomeScreen},
   Profile:{screen: ProfileScreen},
