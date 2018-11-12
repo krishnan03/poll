@@ -18,9 +18,12 @@ export default class UserDetailsModal extends React.Component {
   }
   constructor(props){
     super(props)
+    console.ignoredYellowBox = [
+'Setting a timer'
+];
     this.state=
     ({
-      date:"2016-05-15",
+      date:'',
       PickerValue:'',
       PickerValue1:'',
     })
@@ -44,11 +47,10 @@ export default class UserDetailsModal extends React.Component {
                   employment:employment
                 }
             ).then(() => {
-              alert(firebase.auth.getUid())
-                console.log('INSERTED !');
             }).catch((error) => {
                 alert(error);
             });
+            this.refs.addDetails.close();
   }
   render(){
     return(
@@ -59,13 +61,13 @@ export default class UserDetailsModal extends React.Component {
         borderRadius: Platform.OS ==='ios'?30 : 10,
         shadowRadius:10,
         width:screen.width-80,
-        height:500
+        height:400
       }}
       position='center'
       backdrop={true}
-      onClosed={()=>{
-        alert('Data Saved')
-      }}>
+      onClosed={()=>this.userDetails(this.state.date,this.state.PickerValue,this.state.PickerValue1)
+      }>
+      <Text style={{fontSize:16,fontWeight:'bold',textAlign:'center',marginTop:10}}>Your Details</Text>
     <Text style={{alignSelf: 'flex-start'}}>Date of Birth:</Text>
     <DatePicker
        style={{width: 200}}
@@ -95,9 +97,10 @@ export default class UserDetailsModal extends React.Component {
   selectedValue={this.state.PickerValue}
   onValueChange={(itemValue,itemIndex) => this.setState({PickerValue:itemValue})}
   >
-  <Picker.Item label="Male" value="Male" />
-  <Picker.Item label="Female" value="Female"/>
-  <Picker.Item label="Other" value="Other" />
+<Picker.Item label="Gender" value="" />
+  <Picker.Item label="Male" value="male" />
+  <Picker.Item label="Female" value="female"/>
+  <Picker.Item label="Other" value="other" />
   </Picker>
 
   <Picker
@@ -105,9 +108,10 @@ style={{width:'80%'}}
 selectedValue={this.state.PickerValue1}
 onValueChange={(itemValue,itemIndex) => this.setState({PickerValue1:itemValue})}
 >
-<Picker.Item label="Government Employee" value="Male" />
-<Picker.Item label="Private Employee" value="Female"/>
-<Picker.Item label="Other" value="Other" />
+<Picker.Item label="Employment" value="" />
+<Picker.Item label="Government Employee" value="govt" />
+<Picker.Item label="Private Employee" value="pvt"/>
+<Picker.Item label="Other" value="other" />
 </Picker>
    <Button style={{marginTop:10, width:80, justifyContent:'center', alignSelf: 'center'}}
      rounded

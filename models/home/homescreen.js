@@ -15,17 +15,14 @@ class HomeScreen extends React.Component {
     <Icon name="home" size={20} color={ tintColor } />
     )
   }
-  openModal(){
+  componentDidMount() {
     this.refs.addDetails.showModal();
   }
+
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home!</Text>
-        <Button
-          title="User Modal"
-          onPress={()=> this.openModal()}>
-        </Button>
         <UserDetailsModal ref={'addDetails'}></UserDetailsModal>
       </View>
     );
@@ -42,7 +39,7 @@ var MainScreenNavigator=TabNavigator({
   tabBarPosition:'bottom',
   tabBarOptions:{
     tabBarLabel: null,
-    activeTintColor:'white',
+    activeTintColor:'blue',
     showIcon: true
   }
 });
