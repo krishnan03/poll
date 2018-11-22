@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Entypo';
 
 export default class PollScreen extends React.Component {
   static navigationOptions={
     
     tabBarIcon:({tintColor})=>(
-    <Icon name="bars" size={20} color={ tintColor } />
+    <Icon name="publish" size={20} color={ tintColor } />
     )
   }
   render() {

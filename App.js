@@ -6,13 +6,17 @@ import {StackNavigator} from 'react-navigation';
 import React, { Component ,Keyboard} from 'react';
 import {Container,Content,Header,Form,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View} from 'react-native';
+import Drawer from './models/drawer'
+
 
 const NavigationApp= StackNavigator({
   Login:{screen: Login},
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},
-  HomeScreen:{screen: HomeScreen},
+  HomeScreen:{screen: HomeScreen}
+  //Drawer:{screen:Drawer}
 });
+
 
 export default class App extends React.Component {
   render() {

@@ -1,6 +1,6 @@
 import React, { Component ,Keyboard} from 'react';
 import {Container,Content,Header,Form,Input,Item,Button,Label} from 'native-base';
-import {StyleSheet, Text,View,BackHandler,Dimensions,Platform,Picker} from 'react-native';
+import {StyleSheet, Text,View,BackHandler,Dimensions,Platform,Picker,TextInput} from 'react-native';
 import {StackNavigator} from 'react-navigation';
 import Modal from 'react-native-modalbox';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
@@ -37,11 +37,12 @@ export default class UserDetailsModal extends React.Component {
 		}
 	}
 
-  userDetails(dob,gender,employment){
+  userDetails(name,dob,gender,employment){
     var user ='users/'+(firebase.auth().currentUser.email);
     user=user.replace(".","_")
     firebase.database().ref(user).set(
                 {
+                  name:name,
                   dob:dob,
                   gender:gender,
                   employment:employment
@@ -65,9 +66,15 @@ export default class UserDetailsModal extends React.Component {
       }}
       position='center'
       backdrop={true}
-      onClosed={()=>this.userDetails(this.state.date,this.state.PickerValue,this.state.PickerValue1)
-      }>
+      >
       <Text style={{fontSize:16,fontWeight:'bold',textAlign:'center',marginTop:10}}>Your Details</Text>
+      <View>
+      <Text style={{alignSelf: 'flex-start'}}>Alias Name:</Text>
+      <TextInput
+              label='Name'
+              autoCapitalize="none"
+              onChangeText={(name)=>this.setState({name})}/>
+      </View>
     <Text style={{alignSelf: 'flex-start'}}>Date of Birth:</Text>
     <DatePicker
        style={{width: 200}}
@@ -117,8 +124,8 @@ onValueChange={(itemValue,itemIndex) => this.setState({PickerValue1:itemValue})}
      rounded
      primary
      center
-     onPress={()=> this.userDetails(this.state.date,this.state.PickerValue,this.state.PickerValue1)}>
-     <Text style={{color:'white'}}>Save</Text>
+     onPress={()=> this.userDetails(this.state.name,this.state.date,this.state.PickerValue,this.state.PickerValue1)}>
+     <Text>Save</Text>
    </Button>
       </Modal>
     );
