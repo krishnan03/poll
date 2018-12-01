@@ -19,14 +19,14 @@ export default class HeaderCard extends Component {
             date: '',
             PickerValue: '',
             PickerValue1: '',
-            name:''
+            name: ''
         }
 
-        
+
 
     }
 
-    closeModal(){
+    closeModal() {
         this.refs.addDetails.close();
     }
     async componentWillMount() {
@@ -37,78 +37,76 @@ export default class HeaderCard extends Component {
             const dobVal = value[user].dob;
             var employment = value[user].employment;
             var gender = value[user].gender;
-            var name=value[user].name;
+            var name = value[user].name;
             this.setState({ date: dobVal });
             this.setState({ PickerValue: gender });
             this.setState({ PickerValue1: employment });
-            this.setState({name:name});
+            this.setState({ name: name });
         })
     }
     render() {
-        return<View>
+        return <View>
 
-        <Card>
-            <CardItem>
-                <Left>
-                        <Icon name="ios-arrow-back-outline" size={20} style={{ alignSelf: 'flex-end' }}  onPress={()=> this.closeModal} />
-                    <Text>Details</Text>
-                </Left>
-            </CardItem>
-        </Card>
+            <Card>
+                <CardItem>
+                    <Left>
+                        <Icon name="ios-arrow-back-outline" size={20} style={{ alignSelf: 'flex-end' }} onPress={() => this.closeModal} />
+                        <Text>Details</Text>
+                    </Left>
+                </CardItem>
+            </Card>
 
-        <Card>
-        <CardItem>
-                <Left>
-                    <Text>Alias Name:</Text>
-                    <Text>{this.state.name}</Text>
-                </Left>
-            </CardItem>
-            <View
-                style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                }}
-            />
-            <CardItem>
-                <Left>
-                    <Text>Date of Birth:</Text>
-                    <Text>{this.state.date}</Text>
-                </Left>
-            </CardItem>
-            <View
-                style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                }}
-            />
-            <CardItem>
-                <Left>
-                    <Text>Gender:</Text>
-                    <Text>{this.state.PickerValue}</Text>
-                </Left>
-            </CardItem>
-            <View
-                style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                }}
-            />
-            <CardItem>
-                <Left>
-                    <Text>Employment:</Text>
-                    <Text>{this.state.PickerValue1}</Text>
-                </Left>
-            </CardItem>
-            <View
-                style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                }}
-            />
-        </Card>
-       
+            <Card>
+                <CardItem>
+                    <Left>
+                        <Text>Alias Name:</Text>
+                        <Text>{this.state.name}</Text>
+                    </Left>
+                </CardItem>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <CardItem>
+                    <Left>
+                        <Text>Date of Birth:</Text>
+                        <Text>{this.state.date}</Text>
+                    </Left>
+                </CardItem>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <CardItem>
+                    <Left>
+                        <Text>Gender:</Text>
+                        <Text>{this.state.PickerValue}</Text>
+                    </Left>
+                </CardItem>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <CardItem>
+                    <Left>
+                        <Text>Employment:</Text>
+                        <Text>{this.state.PickerValue1}</Text>
+                    </Left>
+                </CardItem>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+            </Card>
+
         </View>
-        
-
     }
 }

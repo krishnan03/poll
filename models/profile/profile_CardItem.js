@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,View } from 'react';
 import {
     Container, Text, Content,
     Card, CardItem, Thumbnail, Body, Left, Right,
@@ -8,6 +8,7 @@ import { Image,Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from '../../firebase/firebase';
 import {ImagePicker,Permissions} from 'expo';
+import renderIf from './renderif';
 export default class CardComponent extends Component {
   constructor () {
     super()
@@ -15,7 +16,9 @@ export default class CardComponent extends Component {
     var downoadUrl=''
     this.state = {
       dp: null,
-      name:''
+      name:'',
+      verified:false,
+      color:null
     }
 
     this.getImage()
@@ -29,6 +32,18 @@ export default class CardComponent extends Component {
         var value = data.val();
         const name = value[user].name;
         this.setState({ name: name });
+    })
+    var user ='users/'+(firebase.auth().currentUser.email);
+    user=user.replace(".","_")
+    firebase.database().ref(user).on('value', (data) => {
+      var value = data.val();
+      const status = value['Verification'].status;
+      if(status=='Not verified'){
+        this.setState({ verified: false });
+      }else if(status=='Verified'){
+        this.setState({color:'green'}),
+        this.setState({ verified: true });
+      }
     })
     }
 
@@ -45,6 +60,8 @@ export default class CardComponent extends Component {
 
     })
   }
+
+
 
   onChooseImagePress=async()=>{
     var user ='users/'+(firebase.auth().currentUser.email);
@@ -75,8 +92,10 @@ export default class CardComponent extends Component {
   source={{uri: this.state.dp}}
 />
 <Icon name="ios-camera" size={20} style={{alignSelf: 'flex-end'}} onPress={this.onChooseImagePress}/>
-                 <Body>
-                   <Text>{this.state.name}</Text>
+                 <Body style={{justifyContent:'space-between'}}>
+                   <Text style={{borderBottomWidth: 2, borderBottomColor:this.state.verified === true ? 'green' : null}}>{this.state.name} {renderIf(this.state.verified, 
+                    <Thumbnail style={style.thumbIcon} source={require('../../assets/verify.png')}/>   
+                )}</Text>
                      <Text note>     Total Poll Posted:</Text>
                      <Text note>     Total Poll Voted:</Text>
                  </Body>
@@ -84,4 +103,13 @@ export default class CardComponent extends Component {
          </CardItem>
         </Card>
     }
+}
+
+
+const style = {
+  thumbIcon: {
+    width:40,height:40,
+    justifyContent:'space-between'
+  },
+ 
 }

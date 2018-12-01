@@ -49,6 +49,7 @@ export default class DobCardComponent extends Component {
                 style={{
                     borderBottomColor: 'black',
                     borderBottomWidth: 1,
+                    padding:2
                 }}
             />
             <CardItem>
@@ -61,6 +62,7 @@ export default class DobCardComponent extends Component {
                 style={{
                     borderBottomColor: 'black',
                     borderBottomWidth: 1,
+                    padding:2
                 }}
             />
             <CardItem>
@@ -73,6 +75,7 @@ export default class DobCardComponent extends Component {
                 style={{
                     borderBottomColor: 'black',
                     borderBottomWidth: 1,
+                    padding:2
                 }}
             />
         </Card>

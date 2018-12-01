@@ -1,29 +1,30 @@
 import React from 'react';
-import { Text, View,Image,Button } from 'react-native';
-import {DrawerNavigator } from 'react-navigation';
+import { Text, View, Image, Button } from 'react-native';
+import { DrawerNavigator } from 'react-navigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-export default class Settings extends React.Component{
-  static navigationOptions={
-    tabBarLabel:'Settings',
-    drawerIcon:({tintColor})=>{
-      return(
+export default class Settings extends React.Component {
+  static navigationOptions = {
+    tabBarLabel: 'Settings',
+    drawerIcon: ({ tintColor }) => {
+      return (
         <MaterialIcons>
           name="settings"
           size={24}
-          style={{color: tintColor}}
+          style={{ color: tintColor }}
         </MaterialIcons>
-
       );
     }
   }
-  render(){
+  render() {
     return <View style={
-      {flex:1,
-      justifyContent:'center',
-      alignItems:'center'}
+      {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
     }>
-    <Text style={{fontSize:30,color:'green'}}>Settings</Text>
-  </View>
+      <Text style={{ fontSize: 30, color: 'green' }}>Settings</Text>
+    </View>
   }
 }

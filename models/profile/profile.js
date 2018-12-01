@@ -55,7 +55,7 @@ export default class ProfileScreen extends React.Component {
       container
     } = style;
     return (
-      <View style={{ flex: 1, backgroundColor: '#ddd' }}>
+      <View style={{ flex: 1}}>
         <UserDetails ref={'showDetails'}></UserDetails>
         <View style={containerStyle}>
           <TextInput

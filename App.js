@@ -6,15 +6,15 @@ import {StackNavigator} from 'react-navigation';
 import React, { Component ,Keyboard} from 'react';
 import {Container,Content,Header,Form,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View} from 'react-native';
-import Drawer from './models/drawer'
+import MenuScreen from './models/menu/menu'
 
 
 const NavigationApp= StackNavigator({
   Login:{screen: Login},
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},
-  HomeScreen:{screen: HomeScreen}
-  //Drawer:{screen:Drawer}
+  HomeScreen:{screen: HomeScreen},
+  Menu:{screen:MenuScreen},
 });
 
 

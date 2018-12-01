@@ -1,11 +1,8 @@
 import React, { Component ,Keyboard} from 'react';
 import {Container,Content,Header,Form,Input,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View,BackHandler,Dimensions,Platform,Picker,TextInput} from 'react-native';
-import {StackNavigator} from 'react-navigation';
 import Modal from 'react-native-modalbox';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import DatePicker from 'react-native-datepicker';
-import { Dropdown } from 'react-native-material-dropdown';
 import firebase from '../firebase/firebase';
 
 
