@@ -1,4 +1,4 @@
-import React, { Component ,Keyboard} from 'react';
+import React, { Component ,Keyboard,Alert} from 'react';
 import {Container,Content,Header,Form,Input,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View,BackHandler,Dimensions,Platform,Picker,TextInput} from 'react-native';
 import Modal from 'react-native-modalbox';
@@ -32,12 +32,27 @@ export default class UserDetailsModal extends React.Component {
 		}else{
 			alert(data);
 		}
-	}
+  }
+  
+  componentWillMount(){
+    firebase.database().ref('users/').on('value', (data) => {
+      var user = firebase.auth().currentUser.email;
+      user = user.replace(".", "_");
+      var value = data.val();
+      const dobVal = value[user].dob;
+      var employment = value[user].employment;
+      var gender = value[user].gender;
+      this.setState({ date: dobVal });
+      this.setState({ PickerValue: employment });
+      this.setState({ PickerValue1: gender });
+  })
+  }
 
   userDetails(name,dob,gender,employment){
     var user ='users/'+(firebase.auth().currentUser.email);
     user=user.replace(".","_")
-    firebase.database().ref(user).set(
+    if(name!=null){
+    firebase.database().ref(user).update(
                 {
                   name:name,
                   dob:dob,
@@ -50,6 +65,10 @@ export default class UserDetailsModal extends React.Component {
             });
             this.refs.addDetails.close();
   }
+  else{
+    Alert.alert('Please fill mandatory fields');
+  }
+}
   render(){
     return(
       <Modal
@@ -102,9 +121,9 @@ export default class UserDetailsModal extends React.Component {
   onValueChange={(itemValue,itemIndex) => this.setState({PickerValue:itemValue})}
   >
 <Picker.Item label="Gender" value="" />
-  <Picker.Item label="Male" value="male" />
-  <Picker.Item label="Female" value="female"/>
-  <Picker.Item label="Other" value="other" />
+  <Picker.Item label="Male" value="Male" />
+  <Picker.Item label="Female" value="Female"/>
+  <Picker.Item label="Other" value="Other" />
   </Picker>
 
   <Picker
@@ -113,9 +132,9 @@ selectedValue={this.state.PickerValue1}
 onValueChange={(itemValue,itemIndex) => this.setState({PickerValue1:itemValue})}
 >
 <Picker.Item label="Employment" value="" />
-<Picker.Item label="Government Employee" value="govt" />
-<Picker.Item label="Private Employee" value="pvt"/>
-<Picker.Item label="Other" value="other" />
+<Picker.Item label="Government Employee" value="Government Employee" />
+<Picker.Item label="Private Employee" value="Private Employee"/>
+<Picker.Item label="Other" value="Other" />
 </Picker>
    <Button style={{marginTop:10, width:80, justifyContent:'center', alignSelf: 'center'}}
      rounded

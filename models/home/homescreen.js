@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View,Image,Button,Platform,Dimensions} from 'react-native';
-import { TabNavigator,StackNavigator } from 'react-navigation';
+import { TabNavigator,StackNavigator,TabBarBottom } from 'react-navigation';
 import PollScreen from '../poll/poll';
 import ProfileScreen from '../profile/profile';
 import ResultScreen from '../results/results';
@@ -23,18 +23,16 @@ var MainScreenNavigator=TabNavigator({
   Profile:{screen: ProfileScreen},
   
 },{
-  tabBarPosition:'bottom',
-  animationEnabled:true,
-  swipeEnabled:true,
-  tabBarOptions:{
-    activeTintColor:'white' ,
-    inactiveTintColot:'grey',
-    showIcon: true,
-    showLabel: false,
-    style:{
-      backgroundColor:'#1e90ff'
-    },
-  }
+  tabBarComponent: TabBarBottom,
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    activeTintColor: 'tomato',
+    inactiveTintColor: 'gray',
+    showLabel:false
+  },
+  animationEnabled: true,
+  swipeEnabled: true,
+  
 });
 
 

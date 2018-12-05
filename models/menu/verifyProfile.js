@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput, COLORS, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, COLORS, Alert ,ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Button from 'native-base';
 import firebase from '../../firebase/firebase';
@@ -13,7 +13,8 @@ export default class VerifyProfileScreen extends React.Component {
       ({
         about: '',
         link: '',
-        status: ''
+        status: '',
+        isloading:false
 
       })
   }
@@ -36,6 +37,7 @@ export default class VerifyProfileScreen extends React.Component {
   }
   onChooseImagePress = async () => {
     //to upload status
+    this.setState({ isloading: true });
     var user = 'users/' + (firebase.auth().currentUser.email);
     user = user + '/Verification'
     user = user.replace(".", "_")
@@ -57,7 +59,7 @@ export default class VerifyProfileScreen extends React.Component {
       this.uploadImage(result.uri, user)
         .then(() => {
           Alert.alert("Document uploaded successfully");
-
+          this.setState({ isloading: false });
         }).catch((error) => {
           Alert.alert(error);
         });
@@ -145,6 +147,15 @@ export default class VerifyProfileScreen extends React.Component {
         <View style={{ flex: 1, padding: 10, alignItems: 'center', justifyContent: 'center', marginTop: 30 }}>
           <Text style={{ textDecorationLine: 'underline' }} onPress={this.onChooseImagePress}>Upload Government Proof & submit</Text>
           <Icon name="add-to-list" size={20} onPress={this.onChooseImagePress} />
+          {
+        this.state.isloading ? <View>
+        <ActivityIndicator size='large' color='#330066' animating/>
+      </View>
+      : <Text></Text>
+        }
+        </View>
+        <View style={{marginBottom:10,marginTop:150}}>
+          <Text style={{fontStyle:'italic',justifyContent:'center'}}>**Verification will take 2 working days to get Update, On successful verification you will receive mail from us**</Text>
         </View>
       </View>
     );
@@ -170,5 +181,9 @@ const style = StyleSheet.create({
     height: 40,
     justifyContent: "flex-start",
     padding: 10
+  },
+  footerStyle:{
+    position: 'absolute',
+    bottom: 0,
   }
 })

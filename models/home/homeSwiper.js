@@ -20,7 +20,8 @@ import SignOutScreen from '../menu/signout';
 import BugScreen from '../menu/bug';
 import PromotionsScreen from "../menu/promotions";
 import FeedBackScreen from "../menu/feedback";
-
+import UserDetailsModal from '../userDetailsModal';
+import ShowPoll from '../../components/showPoll';
 
 var screen = Dimensions.get('window');
 const { width } = Dimensions.get('window')
@@ -38,7 +39,9 @@ class HomeSwiper extends Component {
             <Icon name="home" size={20} color={tintColor} />
         ),
         
-        title: 'Poll',
+        headerTitle:(
+            <Image style={{width:150,height:75,marginLeft:10}} source={require('../../assets/header1.png')}/>
+        ),
         headerRight: (
       <TouchableHighlight>
             <Icon style={{marginLeft:10,marginRight:10}} name="menu" size={25}  onPress={() => navigation.navigate('Menu')}
@@ -46,7 +49,7 @@ class HomeSwiper extends Component {
            </TouchableHighlight>    
           ),
         headerLeft:(
-            <Icon style={{marginLeft:10,marginRight:10}}  name="home" size={25}
+            <Icon style={{marginLeft:10,marginRight:10}}  name="home" size={20}
             />
         ),
         
@@ -67,9 +70,13 @@ goMenu(){
     alert('insideMenu')
     this.props.navigation.navigate('Menu');
 }
+showPoll() {
+    this.refs.showPoll.showModal();
+}
     render() {
         const{navigate}=this.props.navigation;
         return <Container>
+            <ShowPoll ref={'showPoll'}></ShowPoll>
             <Content>
                 <Swiper
                     autoplay
@@ -109,9 +116,11 @@ goMenu(){
                         ><Text style={{ marginTop: 0 }}>Regional</Text></Button>
                     </View>
                 </View>
-                <Card style={{ marginLeft: 5, marginRight: 5 }}>
-                    <CardItem header style={{ borderBottomWidth: 1, borderBottomColor: '#dee0e2' }}>
-                        <Text>Card View to be Updated</Text>
+                
+                <Card style={{ marginLeft: 5, marginRight: 5 }} >
+                
+                    <CardItem header style={{ borderBottomWidth: 1, borderBottomColor: '#dee0e2' }} >
+                        <Text onPress={() => this.showPoll()}>Card View to be Updated</Text>
                     </CardItem>
                 </Card>
             </Content>
