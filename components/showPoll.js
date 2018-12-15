@@ -22,21 +22,19 @@ export default class ShowPoll extends React.Component {
 
     this.state =
       ({
-        date: '',
-        PickerValue: '',
-        PickerValue1: '',
+        dp: null,
+        name:'',
+        verified:false,
+        color:null
       })
 
+      
+  }
 
-  }
-  clickme = () => {
-    var data = this.state.PickerValue;
-    if (data == "") {
-      alert("Please Select a Option");
-    } else {
-      alert(data);
-    }
-  }
+  
+
+
+  
 
   componentWillMount() {
     
@@ -61,16 +59,16 @@ export default class ShowPoll extends React.Component {
           borderRadius: Platform.OS === 'ios' ? 30 : 10,
           shadowRadius: 10,
           width: screen.width,
-          height: screen.height
+          height: screen.height,
+         
         }}
         position='center'
         backdrop={true}
+        swipeArea={200}
         animationIn={'slideInLeft'}
         animationOut={'slideOutRight'}>
         <Content style={{ height: 5}}>
           <PollComponents/>
-
-           
         </Content>
 
          

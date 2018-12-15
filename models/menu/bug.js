@@ -112,7 +112,7 @@ export default class BugScreen extends React.Component {
         this.state.isloading ? <View>
         <ActivityIndicator size='large' color='#330066' animating/>
       </View>
-      : <Text></Text>
+      : null
         }
         <View style={{marginBottom:10,marginTop:25}}>
           <Text style={{fontStyle:'italic',justifyContent:'center'}}>**Please provide valid contact number which is having bank account, Every valid bug will be rewarded depends upon severity which will be sent to your account.**</Text>

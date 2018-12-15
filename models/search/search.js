@@ -1,8 +1,10 @@
 import React from 'react';
-import { Text, View, ScrollView, Thumbnail, Image, ImageBackground, TextInput, StatusBar, Platform } from 'react-native';
+import { Text, View, ScrollView, Thumbnail, Image, ImageBackground, TextInput, StatusBar, Platform, Picker, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { CardView, Card, CardItem, Left } from 'react-native-elements';
+import { CardView, Card, CardItem, Left, ThemeProvider } from 'react-native-elements';
 import { Container, Content } from 'native-base';
+import firebase from '../../firebase/firebase';
+import SearchItems from './searchOutput'
 
 
 export default class SearchScreen extends React.Component {
@@ -12,6 +14,38 @@ export default class SearchScreen extends React.Component {
       <Icon name="search" size={20} color={tintColor} />
     )
   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      //data:['MultiChoice','Multiple Answers'],
+      checked: 0,
+      check: false, PickerValue: '',value:'',
+      queryOutput:[], data:'',loadValue:false
+      
+    }
+  }
+  componentWillMount() {
+ 
+
+}
+
+async componentDidMount() {
+ 
+}
+  fetchDataFromFirebase(value) {
+   
+    var ref = firebase.database().ref("users/");
+    ref.orderByChild("name").equalTo(value).on("child_added", function (snapshot) {
+     this.setState({
+       queryOutput: this.state.queryOutput.concat(snapshot.key),
+      })
+    }.bind(this));
+  console.log(this.state.queryOutput);
+  this.setState({
+    loadValue:true
+  })
+  }
+
   render() {
     return (
       <Container style={style.container}>
@@ -21,8 +55,22 @@ export default class SearchScreen extends React.Component {
               <TextInput
                 placeholder="Search"
                 style={style.searchTextStyle}
+                onChangeText={(value) => this.setState({ value })} 
               />
-              <Icon style={style.buttonStyle} name="search" size={20}
+              <Picker
+                style={{ width: '5%' }}
+                selectedValue={this.state.PickerValue}
+                onValueChange={(itemValue, itemIndex) => this.setState({ PickerValue: itemValue })}
+                mode={'dropdown'}
+              >
+
+                <Picker.Item label="" value="" />
+                <Picker.Item label="Search in Poll" value="poll" />
+                <Picker.Item label="Search in Label" value="label" />
+                <Picker.Item label="Seach in Profile" value="Profile" />
+              </Picker>
+
+              <Icon style={style.buttonStyle} name="search" size={20} onPress={() => this.fetchDataFromFirebase(this.state.value)}
               />
             </View>
             <View style={style.navBar}>
@@ -121,6 +169,10 @@ export default class SearchScreen extends React.Component {
               </ScrollView>
             </View>
           </View>
+          <View>
+                {this.state.loadValue ? <SearchItems name={this.state.queryOutput[0]}/> : null}
+          </View>
+
         </Content>
       </Container >
     );

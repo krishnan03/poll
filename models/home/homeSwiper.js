@@ -22,6 +22,10 @@ import PromotionsScreen from "../menu/promotions";
 import FeedBackScreen from "../menu/feedback";
 import UserDetailsModal from '../userDetailsModal';
 import ShowPoll from '../../components/showPoll';
+import PollOptions from '../../components/pollOptions'
+import ShowPoll1 from "../../components/showPoll1";
+import {Permissions,Notifications} from 'expo';
+import firebase from '../../firebase/firebase';
 
 var screen = Dimensions.get('window');
 const { width } = Dimensions.get('window')
@@ -65,7 +69,38 @@ class HomeSwiper extends Component {
                 require('../../assets/swiper2.jpg')
             ]
         }
+       
     }
+componentDidMount(){
+    
+}
+
+registerforPushNotification=async()=>{
+    const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+    
+      // only ask if permissions have not already been determined, because
+      // iOS won't necessarily prompt the user a second time.
+      if (existingStatus !== 'granted') {
+        // Android remote notification permissions are granted during the app
+        // install, so this will only ask on iOS
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+    
+      // Stop here if the user did not grant permissions
+      if (finalStatus !== 'granted') {
+        return;
+      }
+    
+      // Get the token that uniquely identifies this device
+      let token = await Notifications.getExpoPushTokenAsync();
+      var update={}
+      updates['/expotoken']=token
+      firebase.database.ref('users/gplkrishnan320@gmail_com').update(updates)
+}
 goMenu(){
     alert('insideMenu')
     this.props.navigation.navigate('Menu');
@@ -120,7 +155,7 @@ showPoll() {
                 <Card style={{ marginLeft: 5, marginRight: 5 }} >
                 
                     <CardItem header style={{ borderBottomWidth: 1, borderBottomColor: '#dee0e2' }} >
-                        <Text onPress={() => this.showPoll()}>Card View to be Updated</Text>
+                        <Text onPress={() => navigate('ShowPoll')}>Card View to be Updated</Text>
                     </CardItem>
                 </Card>
             </Content>
@@ -139,7 +174,8 @@ const NavigationApp1= StackNavigator({
     Bug:{screen:BugScreen},
     Feedback:{screen:FeedBackScreen},
     Signout:{screen:SignOutScreen},
-
+    PollOptions:{screen:PollOptions},
+    ShowPoll:{screen:ShowPoll1}
   });
 //export default HomeSwiper;
 export default NavigationApp1;

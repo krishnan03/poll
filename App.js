@@ -7,14 +7,15 @@ import React, { Component ,Keyboard} from 'react';
 import {Container,Content,Header,Form,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View} from 'react-native';
 import MenuScreen from './models/menu/menu'
-
+import UserData from './models/UserData';
 
 const NavigationApp= StackNavigator({
+  UserData:{screen:UserData},
   Login:{screen: Login},
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},
   HomeScreen:{screen: HomeScreen},
-  Menu:{screen:MenuScreen},
+  
 });
 
 
