@@ -44,19 +44,11 @@ import offlineHelper from '../../components/offlineHelperFunction';
     }
   }
 
-  // state = {
-  //   isConnected: true
-  // };
-  
   componentDidMount() {
-  //  NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
-  //  hcc= new handleConnectivityClass();
    offlineHelper.whenDidMount(this.handleConnectivityChange)
   }
 
   componentWillUnmount() {
-    // hcc= new handleConnectivityClass();
-  //  NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
    offlineHelper.whenUnmount(this.handleConnectivityChange)
   }
 
@@ -115,7 +107,6 @@ import offlineHelper from '../../components/offlineHelperFunction';
     })
     var user ='users/'+(firebase.auth().currentUser.email);
     user=user.replace(".","_")
-  //  let result= await ImagePicker.launchCameraAsync();
     let result= await ImagePicker.launchImageLibraryAsync();
    
     if(!result.cancelled){
@@ -179,7 +170,6 @@ import offlineHelper from '../../components/offlineHelperFunction';
                    label='hashTag'
                    placeholder='Hash your Label'
                    onChangeText={(hashTag)=>this.setState({hashTag})}
-                  // onFocus={() => this._onFocus()}
               />
               
             </View>
@@ -238,9 +228,6 @@ import offlineHelper from '../../components/offlineHelperFunction';
 const NavigationPoll= StackNavigator({
   PollMain:{screen: PollUpdScreen},
   AnswerMain:{screen: AnswerPoll},
- 
- 
-
 });
 
 
@@ -257,9 +244,4 @@ const styles = StyleSheet.create({
 });
 
 
-
-// var pollnavi=StackNavigator({
-//   question:{screen: PollUpdScreen},
-//   answer: {screen: answerPoll}
-// })
  export default NavigationPoll;
