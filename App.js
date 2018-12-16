@@ -10,10 +10,11 @@ import MenuScreen from './models/menu/menu'
 
 
 const NavigationApp= StackNavigator({
+  HomeScreen:{screen: HomeScreen},
   Login:{screen: Login},
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},
-  HomeScreen:{screen: HomeScreen},
+  
   Menu:{screen:MenuScreen},
 });
 
