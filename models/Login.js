@@ -1,6 +1,6 @@
 import React, { Component, Keyboard } from 'react';
 import { Container, Content, Header, Form, Item, Button, Label, Input } from 'native-base';
-import { StyleSheet, Text, View, KeyboardAvoidingView,ScrollView} from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView,ScrollView,ActivityIndicator} from 'react-native';
 import firebase from '../firebase/firebase';
 import editInput from '../components/input';
 import KeyboardAvoid from 'react-native-keyboard-avoid';
@@ -8,32 +8,41 @@ import {Permissions,Notifications} from 'expo';
 
 export default class Login extends React.Component {
   static navigationOptions = {
-    header: null
+    header:null
   };
   constructor() {
     super()
 
     var downoadUrl = ''
     this.state = {
-        userData: null,
+        userData: null,isloading:false
     }
   }
   loginUser = (email, password) => {
+    if(email!=null && password!=null){
+    this.setState({
+      isloading:true
+    })
     const { navigate } = this.props.navigation;
     firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(user=>{
       firebase.database().ref('users/').on('value', (data) => {
         var user = firebase.auth().currentUser.email;
-      user = user.replace(".", "_");
+      user = user.replace(/\./g, "_");
       var value = data.val();
       const UD = value[user].userData;
-      this.setState({ userData: UD });
+      this.setState({ userData: UD })
+      console.log(this.state.userData);
+      {this.state.userData ? navigate('HomeScreen') : navigate('UserData')}
     })
       this.registerforPushNotification(user);
      
-      {this.state.userData ? navigate('HomeScreen') : navigate('UserData')}
+     
     }).catch(function (e) {
       alert(e);
-    })
+    });
+   } else{
+      alert("Enter Valid Username and Password")
+    }
   }
   _onPress () {
     this.aTextInput.focus();
@@ -72,6 +81,7 @@ registerforPushNotification=async(user)=>{
       alert(error);
   });
 }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -103,6 +113,12 @@ registerforPushNotification=async(user)=>{
             >
               <Text style={{ color: 'white' }}>Login</Text>
             </Button>
+            {
+        this.state.isloading ? <View>
+        <ActivityIndicator size='large' color='#330066' animating/>
+      </View>
+      : null
+        }
             <Button style={{ marginTop: 10 }}
               full
               rounded

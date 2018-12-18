@@ -28,7 +28,9 @@ var MainScreenNavigator=TabNavigator({
   tabBarOptions: {
     activeTintColor: 'tomato',
     inactiveTintColor: 'gray',
-    showLabel:false
+    showLabel:false,
+    header:null,
+    title:null
   },
   animationEnabled: true,
   swipeEnabled: true,

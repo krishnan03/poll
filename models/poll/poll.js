@@ -153,9 +153,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 const NavigationPoll= StackNavigator({
   PollMain:{screen: PollUpdScreen},
   AnswerMain:{screen: AnswerPoll},
- 
- 
-
 });
 
 

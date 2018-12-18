@@ -1,33 +1,29 @@
 import React from 'react';
-import { View, Left, Input, Item, TextInput, Alert, TouchableHighlight, Text ,Platform,StatusBar,TouchableOpacity} from 'react-native';
+import { View, Left, Input, Item, TextInput, Alert, TouchableHighlight, Text } from 'react-native';
 import { Container, Content, Form, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
-import CardComponent from './profile_CardItem';
+
 import { ImagePicker, Permissions } from 'expo';
 import firebase from '../../firebase/firebase';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 //import ProfileDetails from './ProfileDetails';
-import UserDetails from './ProfileDetails';
-import ProfileDetailsScreen from './ProfieDetail1';
 
-class ProfileScreen extends React.Component {
+
+class showProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selected: null,
       fontLoaded: false,
-      name: '',
-      value:''
+      name: ''
     }
-    
 
   }
   static navigationOptions = {
+    title: null,
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="user" size={20} color={tintColor} />
-    ),
-    header:null
-
+      <Icon name="search" size={20} color={tintColor} />
+    )
   }
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
@@ -37,7 +33,7 @@ class ProfileScreen extends React.Component {
       Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
     });
     this.setState({ fontLoaded: true });
-  
+
   }
   loginUser() {
     this.refs.showDetails.showModal();
@@ -55,23 +51,8 @@ class ProfileScreen extends React.Component {
     } = style;
     return (
       <View style={{ flex: 1 }}>
-        <Content style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10}}>
-          <CardComponent />
-          <View style={container}>
-            <View style={buttonContainer}>
-            <TouchableOpacity>
-              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}><Text>Poll <Icon name="chevron-down" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
-              </TouchableOpacity>
-            </View>
-            <View style={buttonContainer}>
-            <TouchableOpacity>
-              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}
-                onPress={() => navigate('ProfileDetails')}
-              ><Text>Details <Icon name="chevron-right" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
-            </TouchableOpacity>
-            </View>
-          </View>
-          <View style={containerStyle}>
+        <UserDetails ref={'showDetails'}></UserDetails>
+        <View style={containerStyle}>
           <TextInput
             placeholder="Search Poll in Profiles"
             style={searchTextStyle}
@@ -79,6 +60,21 @@ class ProfileScreen extends React.Component {
           <Icon style={buttonStyle} name="magnifying-glass" size={20}
           />
         </View>
+
+
+        <Content>
+          <CardComponent />
+          <View style={container}>
+            <View style={buttonContainer}>
+              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}><Text>Poll <Icon name="chevron-down" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
+            </View>
+            <View style={buttonContainer}>
+              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}
+                onPress={() => navigate('ProfileDetails')}
+              ><Text>Details <Icon name="chevron-right" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
+            </View>
+          </View>
+
         </Content>
         <View>
 
@@ -94,6 +90,7 @@ class ProfileScreen extends React.Component {
 const style = {
   containerStyle: {
     flexDirection: 'row',
+    marginTop: 30,
     marginLeft: 10,
     marginRight: 10
   },

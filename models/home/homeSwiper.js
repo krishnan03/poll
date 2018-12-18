@@ -42,7 +42,7 @@ class HomeSwiper extends Component {
         tabBarIcon: ({ tintColor }) => (
             <Icon name="home" size={20} color={tintColor} />
         ),
-        
+        header:null,
         headerTitle:(
             <Image style={{width:150,height:75,marginLeft:10}} source={require('../../assets/header1.png')}/>
         ),
@@ -110,8 +110,15 @@ showPoll() {
 }
     render() {
         const{navigate}=this.props.navigation;
-        return <Container>
+        return <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
             <ShowPoll ref={'showPoll'}></ShowPoll>
+            <View style={{ flexDirection:"row", justifyContent:"space-between",elevation:10,backgroundColor:'white'}}>
+            
+            <Image style={{width:150,height:45,marginLeft:10}} source={require('../../assets/header1.png')}/>
+            <Text></Text>
+            <Icon  style={{marginTop:12,marginRight:5}} name="menu" size={25}  onPress={() => navigate('Menu')}
+                />
+            </View>
             <Content>
                 <Swiper
                     autoplay
@@ -150,10 +157,10 @@ showPoll() {
                             onPress={() => this.loginUser()}
                         ><Text style={{ marginTop: 0 }}>Regional</Text></Button>
                     </View>
+                    
                 </View>
                 
                 <Card style={{ marginLeft: 5, marginRight: 5 }} >
-                
                     <CardItem header style={{ borderBottomWidth: 1, borderBottomColor: '#dee0e2' }} >
                         <Text onPress={() => navigate('ShowPoll')}>Card View to be Updated</Text>
                     </CardItem>

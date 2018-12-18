@@ -20,7 +20,8 @@ export default class ProfileDetailsScreen extends React.Component {
             name: '',
             date: '',
             PickerValue: '',
-            PickerValue1: ''
+            PickerValue1: '',
+            country:''
         }
 
 
@@ -50,11 +51,12 @@ export default class ProfileDetailsScreen extends React.Component {
             const dobVal = value[user].dob;
             var employment = value[user].employment;
             var gender = value[user].gender;
-            var name = value[user].name;
-            this.setState({ name: name });
+            var country= value[user].country;
             this.setState({ date: dobVal });
-            this.setState({ PickerValue: employment });
-            this.setState({ PickerValue1: gender });
+            this.setState({ PickerValue: gender });
+            this.setState({ PickerValue1: employment });
+            this.setState({ name: name });
+            this.setState({country:country});
         })
     }
 
@@ -115,6 +117,21 @@ export default class ProfileDetailsScreen extends React.Component {
                             <Text>Employment:</Text>
                             <Text>     {this.state.PickerValue}</Text>
                         </CardItem>
+                    </Card>
+                    <Card>
+                    <CardItem>
+                <Left>
+                    <Text>Country:</Text>
+                    <Text>{this.state.country}</Text>
+                </Left>
+            </CardItem>
+            <View
+                style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                    padding:2
+                }}
+            />
                     </Card>
                 </Content>
                 <Button style={{ marginTop: 10, width: 80, justifyContent: 'center', alignSelf: 'center' }}

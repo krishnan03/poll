@@ -18,6 +18,7 @@
     "firebase-functions": "^2.1.0",
     "native-base": "^2.8.1",
     "react": "16.3.1",
+    "react-country-region-selector": "^1.4.3",
     "react-dom": "^16.6.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-button": "^2.3.0",

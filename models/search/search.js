@@ -1,15 +1,17 @@
 import React from 'react';
-import { Text, View, ScrollView, Thumbnail, Image, ImageBackground, TextInput, StatusBar, Platform, Picker, TouchableHighlight } from 'react-native';
+import { Text, View, ScrollView, Thumbnail, Image, ImageBackground, TextInput, StatusBar, Platform, Picker, TouchableHighlight,navigation} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CardView, Card, CardItem, Left, ThemeProvider } from 'react-native-elements';
 import { Container, Content } from 'native-base';
 import firebase from '../../firebase/firebase';
-import SearchItems from './searchOutput'
+import SearchItems from './searchOutput';
+import {StackNavigator} from 'react-navigation';
 
 
-export default class SearchScreen extends React.Component {
+ class SearchScreen extends React.Component {
   static navigationOptions = {
     title: null,
+    header:null,
     tabBarIcon: ({ tintColor }) => (
       <Icon name="search" size={20} color={tintColor} />
     )
@@ -17,11 +19,9 @@ export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //data:['MultiChoice','Multiple Answers'],
       checked: 0,
       check: false, PickerValue: '',value:'',
-      queryOutput:[], data:'',loadValue:false
-      
+      queryOutput:[], data:'',loadValue:true
     }
   }
   componentWillMount() {
@@ -33,21 +33,34 @@ async componentDidMount() {
  
 }
   fetchDataFromFirebase(value) {
-   
+    
+    const{navigate}=this.props.navigation;
     var ref = firebase.database().ref("users/");
     ref.orderByChild("name").equalTo(value).on("child_added", function (snapshot) {
+      if(snapshot.key!=null){
      this.setState({
        queryOutput: this.state.queryOutput.concat(snapshot.key),
       })
-    }.bind(this));
+    }}
+    .bind(this));
+  
   console.log(this.state.queryOutput);
+
+let unique = [...new Set(this.state.queryOutput)];
+ if(this.state.queryOutput[0]!=null){
+  let category={
+    output: unique,
+    };
+   navigate('SeachOutput',category)
   this.setState({
     loadValue:true
-  })
+  })}
   }
 
   render() {
+    const{navigate}=this.props.navigation;
     return (
+      
       <Container style={style.container}>
         <Content>
           <View>
@@ -169,15 +182,20 @@ async componentDidMount() {
               </ScrollView>
             </View>
           </View>
-          <View>
-                {this.state.loadValue ? <SearchItems name={this.state.queryOutput[0]}/> : null}
-          </View>
+          
 
         </Content>
       </Container >
     );
   }
 }
+
+const NavigationSearch= StackNavigator({
+  SearchMain:{screen: SearchScreen},
+  SeachOutput:{screen: SearchItems},
+});
+
+export default NavigationSearch;
 
 const style = {
   container: {

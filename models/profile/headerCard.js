@@ -8,6 +8,7 @@ import { Image, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from '../../firebase/firebase';
 import { ImagePicker, Permissions } from 'expo';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class HeaderCard extends Component {
     constructor() {
@@ -19,7 +20,8 @@ export default class HeaderCard extends Component {
             date: '',
             PickerValue: '',
             PickerValue1: '',
-            name: ''
+            name: '',
+            country:''
         }
 
 
@@ -38,14 +40,16 @@ export default class HeaderCard extends Component {
             var employment = value[user].employment;
             var gender = value[user].gender;
             var name = value[user].name;
+            var country= value[user].country;
             this.setState({ date: dobVal });
             this.setState({ PickerValue: gender });
             this.setState({ PickerValue1: employment });
             this.setState({ name: name });
+            this.setState({country:country});
         })
     }
     render() {
-        return <View>
+        return <ScrollView>
 
             <Card>
                 <CardItem>
@@ -105,8 +109,21 @@ export default class HeaderCard extends Component {
                         borderBottomWidth: 1,
                     }}
                 />
+                <CardItem>
+                <Left>
+                    <Text>Country:</Text>
+                    <Text>{this.state.country}</Text>
+                </Left>
+            </CardItem>
+            <View
+                style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                    padding:2
+                }}
+            />
             </Card>
 
-        </View>
+        </ScrollView>
     }
 }
