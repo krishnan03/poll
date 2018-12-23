@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import { Image, View, StyleSheet, Dimensions, Text, Button, TouchableOpacity, TouchableHighlight,navigation} from 'react-native';
+import { Image, View, StyleSheet, Dimensions, Text, Button, TouchableOpacity, TouchableHighlight} from 'react-native';
 import { } from 'react-native-elements';
 import { Thumbnail,Card, CardItem,Left,Body } from 'native-base';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import renderIf from '../../components/renderif';
+
 let windowWidth = Dimensions.get('window');
 export default class CardValue extends React.Component {
    constructor(props) {
@@ -55,15 +56,14 @@ componentWillMount(){
             }
           })
 }
-showData(){
-   
-    
+showData(email){
+    const{navigate}= this.props.navigation;
+    navigate('ProfileScreen')
 }
 render(){
-    
    return (
     <View>
-   
+    <TouchableOpacity onPress={() => this.showData(this.props.name)}>
     <Card>
         <CardItem>
         <Left>
@@ -82,7 +82,7 @@ render(){
         </Left>
         </CardItem>
     </Card>
-    
+    </TouchableOpacity>
     </View>
        );
    }

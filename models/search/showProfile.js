@@ -6,10 +6,10 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { ImagePicker, Permissions } from 'expo';
 import firebase from '../../firebase/firebase';
 import { TabNavigator, StackNavigator } from 'react-navigation';
-//import ProfileDetails from './ProfileDetails';
+import ProfileScreen from '../profile/profile';
 
 
-class showProfile extends React.Component {
+export default class showProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,10 +35,7 @@ class showProfile extends React.Component {
     this.setState({ fontLoaded: true });
 
   }
-  loginUser() {
-    this.refs.showDetails.showModal();
-
-  }
+ 
   render() {
     const { navigate } = this.props.navigation;
     const {
@@ -51,30 +48,11 @@ class showProfile extends React.Component {
     } = style;
     return (
       <View style={{ flex: 1 }}>
-        <UserDetails ref={'showDetails'}></UserDetails>
-        <View style={containerStyle}>
-          <TextInput
-            placeholder="Search Poll in Profiles"
-            style={searchTextStyle}
-          />
-          <Icon style={buttonStyle} name="magnifying-glass" size={20}
-          />
-        </View>
+       
 
 
         <Content>
-          <CardComponent />
-          <View style={container}>
-            <View style={buttonContainer}>
-              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}><Text>Poll <Icon name="chevron-down" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
-            </View>
-            <View style={buttonContainer}>
-              <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}
-                onPress={() => navigate('ProfileDetails')}
-              ><Text>Details <Icon name="chevron-right" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
-            </View>
-          </View>
-
+          <ProfileScreen />
         </Content>
         <View>
 
@@ -121,10 +99,3 @@ const style = {
 }
 
 
-
-const NavigationProfile= StackNavigator({
-  ProfilePoll:{screen: ProfileScreen},
-  ProfileDetails:{screen:ProfileDetailsScreen},
-});
-//export default HomeSwiper;
-export default NavigationProfile;

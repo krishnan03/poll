@@ -37,7 +37,7 @@ export default class UserDetailsModal extends React.Component {
   componentWillMount(){
     firebase.database().ref('users/').on('value', (data) => {
       var user = firebase.auth().currentUser.email;
-      user = user.replace(".", "_");
+      user = user.replace(/\./g, "_");
       var value = data.val();
       const dobVal = value[user].dob;
       var employment = value[user].employment;

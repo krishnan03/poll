@@ -10,7 +10,7 @@ import MenuScreen from './models/menu/menu'
 import UserData from './models/UserData';
 
 const NavigationApp= StackNavigator({
-  
+
   Login:{screen: Login},
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},

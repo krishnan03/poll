@@ -43,7 +43,7 @@ export default class Signup extends React.Component {
             
             firebase.database().ref('users/'+user).set(
               {
-               userData:'true'
+               userData:'false'
               }),
               firebase.database().ref('users/'+user + '/Verification').update(
                 {

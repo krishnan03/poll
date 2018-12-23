@@ -42,7 +42,7 @@ export default class UserData extends React.Component {
   userDetails(name, dob, gender, employment,country) {
     const { navigate } = this.props.navigation;
     var user = 'users/' + (firebase.auth().currentUser.email);
-    user = user.replace(".", "_")
+    user = user.replace(/\./g, "_")
     if (name != null) {
       firebase.database().ref(user).update(
         {

@@ -10,16 +10,18 @@ import firebase from '../../firebase/firebase';
 import { ImagePicker, Permissions } from 'expo';
 import renderIf from './renderif';
 export default class CardComponent extends Component {
-  constructor() {
-    super()
-    //alert(this.props.email);
+  constructor(props) {
+    super(props)
+    
     var downoadUrl = ''
     this.state = {
       dp: null,
       name: '',
       verified: false,
       color: null,
-      email:''
+      email:this.props.email,
+      followerCount:'',
+      followingCount:''
     }
    
     
@@ -27,11 +29,7 @@ export default class CardComponent extends Component {
   }
 
   async componentWillMount() {
-    this.setState({
-      email: firebase.auth().currentUser.email
-    })
-   
-
+    
     const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
     firebase.database().ref('users/').on('value', (data) => {
       var user = this.state.email;
@@ -52,7 +50,12 @@ export default class CardComponent extends Component {
         this.setState({ color: 'green' }),
           this.setState({ verified: true });
       }
+      const followerCount = value['Follow']['followers'].count;
+     this.setState({followerCount: followerCount});
+     const followingCount = value['Follow']['following'].count;
+     this.setState({followingCount: followingCount});
     })
+    
   }
 
 
@@ -116,6 +119,15 @@ export default class CardComponent extends Component {
           </Body>
         </Left>
       </CardItem>
+
+      <CardItem style={{flexDirection : 'row', justifyContent:'space-between'}}>
+                <Left>
+                   <Text note> {this.state.followingCount} Following</Text>
+                </Left>
+                <Right>
+                   <Text note> {this.state.followerCount} Followers</Text>
+                </Right>
+        </CardItem>
     </Card>
   }
 }

@@ -15,7 +15,7 @@ export default class Login extends React.Component {
 
     var downoadUrl = ''
     this.state = {
-        userData: null,isloading:false
+        userData: false,isloading:false
     }
   }
   loginUser = (email, password) => {

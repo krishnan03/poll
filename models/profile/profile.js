@@ -9,6 +9,7 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 //import ProfileDetails from './ProfileDetails';
 import UserDetails from './ProfileDetails';
 import ProfileDetailsScreen from './ProfieDetail1';
+import ProfileFollow from './profile_Follow';
 
 class ProfileScreen extends React.Component {
   constructor(props) {
@@ -17,10 +18,11 @@ class ProfileScreen extends React.Component {
       selected: null,
       fontLoaded: false,
       name: '',
-      value:''
+      value:'',
+      email:'',
+      isMainUser:false
     }
     
-
   }
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => (
@@ -30,6 +32,22 @@ class ProfileScreen extends React.Component {
 
   }
   async componentWillMount() {
+    let paramfromOutput = this.props.navigation.state.params;
+  
+   try{
+    this.setState({
+      email:paramfromOutput.email
+    })
+     
+    }catch(err){
+    
+      this.setState({
+        email:firebase.auth().currentUser.email
+      })
+       
+    }
+    
+   
     const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
     await Expo.Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
@@ -37,11 +55,17 @@ class ProfileScreen extends React.Component {
       Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf")
     });
     this.setState({ fontLoaded: true });
-  
   }
   loginUser() {
     this.refs.showDetails.showModal();
 
+  }
+  componentDidMount(){
+    if(this.state.email == firebase.auth().currentUser.email){
+        this.setState({
+            isMainUser:true
+        })
+    }
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -56,7 +80,7 @@ class ProfileScreen extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <Content style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10}}>
-          <CardComponent />
+          <CardComponent email={this.state.email}/>
           <View style={container}>
             <View style={buttonContainer}>
             <TouchableOpacity>
@@ -66,7 +90,7 @@ class ProfileScreen extends React.Component {
             <View style={buttonContainer}>
             <TouchableOpacity>
               <Button transparent style={{ padding: '10%', alignSelf: 'center', marginTop: 0 }}
-                onPress={() => navigate('ProfileDetails')}
+                onPress={() => navigate('ProfileDetails',{email:this.state.email})}
               ><Text>Details <Icon name="chevron-right" size={20} style={{marginTop:10,justifyContent:'center'}}/></Text></Button>
             </TouchableOpacity>
             </View>
@@ -83,6 +107,8 @@ class ProfileScreen extends React.Component {
         <View>
 
         </View>
+        {this.state.isMainUser ? null:
+        <ProfileFollow />}
       </View>
     );
   }

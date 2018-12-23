@@ -12,7 +12,9 @@ export default class SearchItems extends React.Component {
         this.state = {
             data: [null],
             val: ''
+            
         }
+       
 
     }
     static navigationOptions = {
@@ -30,22 +32,21 @@ export default class SearchItems extends React.Component {
 
 
     render() {
+        const{navigate}=this.props.navigation;
         let paramfromOutput = this.props.navigation.state.params;
 
         return (
+            
             <View style={{ paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10 }}>
                 {
-                    paramfromOutput.output.map((output) =><CardValue
-                   name={output}
-                />)
+                    paramfromOutput.output.map((output) =>
+                    
+                    <TouchableOpacity onPress={()=>navigate('ShowProfile',{email:output})}>
+                        <CardValue
+                   name={output} 
+                />
+                </TouchableOpacity>)
                 }
-                
-                    
-                    
-                
-                
-
-
             </View>
         );
     }

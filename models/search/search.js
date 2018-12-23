@@ -6,6 +6,7 @@ import { Container, Content } from 'native-base';
 import firebase from '../../firebase/firebase';
 import SearchItems from './searchOutput';
 import {StackNavigator} from 'react-navigation';
+import ProfileScreen from '../profile/profile';
 
 
  class SearchScreen extends React.Component {
@@ -35,8 +36,10 @@ async componentDidMount() {
   fetchDataFromFirebase(value) {
     
     const{navigate}=this.props.navigation;
+
+    if(this.state.PickerValue == 'profile'){
     var ref = firebase.database().ref("users/");
-    ref.orderByChild("name").equalTo(value).on("child_added", function (snapshot) {
+    ref.orderByChild("name").startAt(value).endAt(value+'\uf8ff').on("child_added", function (snapshot) {
       if(snapshot.key!=null){
      this.setState({
        queryOutput: this.state.queryOutput.concat(snapshot.key),
@@ -49,12 +52,38 @@ async componentDidMount() {
 let unique = [...new Set(this.state.queryOutput)];
  if(this.state.queryOutput[0]!=null){
   let category={
-    output: unique,
+    output: unique
     };
    navigate('SeachOutput',category)
   this.setState({
     loadValue:true
   })}
+}if(this.state.PickerValue == 'poll'){
+  var ref = firebase.database().ref("users/");
+    //ref=ref.child("Poll/");
+
+    ref=ref.orderByChild("Poll").on("child_added", function (snapshot) {
+    
+      if(snapshot.val!=null){
+        console.log(snapshot.val())
+     this.setState({
+       queryOutput: this.state.queryOutput.concat(snapshot.key),
+      })
+    }}
+    .bind(this));
+  
+  console.log(this.state.queryOutput);
+
+let unique = [...new Set(this.state.queryOutput)];
+ if(this.state.queryOutput[0]!=null){
+  let category={
+    output: unique
+    };
+   navigate('SeachOutput',category)
+  this.setState({
+    loadValue:true
+  })}
+}
   }
 
   render() {
@@ -76,11 +105,10 @@ let unique = [...new Set(this.state.queryOutput)];
                 onValueChange={(itemValue, itemIndex) => this.setState({ PickerValue: itemValue })}
                 mode={'dropdown'}
               >
-
                 <Picker.Item label="" value="" />
                 <Picker.Item label="Search in Poll" value="poll" />
                 <Picker.Item label="Search in Label" value="label" />
-                <Picker.Item label="Seach in Profile" value="Profile" />
+                <Picker.Item label="Seach in Profile" value="profile" />
               </Picker>
 
               <Icon style={style.buttonStyle} name="search" size={20} onPress={() => this.fetchDataFromFirebase(this.state.value)}
@@ -193,6 +221,7 @@ let unique = [...new Set(this.state.queryOutput)];
 const NavigationSearch= StackNavigator({
   SearchMain:{screen: SearchScreen},
   SeachOutput:{screen: SearchItems},
+  ShowProfile:{screen: ProfileScreen}
 });
 
 export default NavigationSearch;
@@ -226,4 +255,3 @@ const style = {
     backgroundColor: 'white',
   }
 }
-
