@@ -26,7 +26,7 @@ class ProfileScreen extends React.Component {
   }
   static navigationOptions = {
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="user" size={20} color={tintColor} />
+      <Icon name="user" size={20} color={tintColor} /> 
     ),
     header:null
 
@@ -108,7 +108,7 @@ class ProfileScreen extends React.Component {
 
         </View>
         {this.state.isMainUser ? null:
-        <ProfileFollow />}
+        <ProfileFollow email={this.state.email}/>}
       </View>
     );
   }

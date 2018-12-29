@@ -49,15 +49,69 @@ export default class CardComponent extends Component {
       } else if (status == 'Verified') {
         this.setState({ color: 'green' }),
           this.setState({ verified: true });
-      }
-      const followerCount = value['Follow']['followers'].count;
-     this.setState({followerCount: followerCount});
-     const followingCount = value['Follow']['following'].count;
-     this.setState({followingCount: followingCount});
+      }      
     })
-    
+    firebase.database().ref(user + '/Follow/followers').on('value', (data) => {
+      this.setState({followerCount: this.getAlphaNumericalCount(data.numChildren()-1)});
+    })
+    firebase.database().ref(user + '/Follow/following').on('value', (data) => {
+      this.setState({followingCount: this.getAlphaNumericalCount(data.numChildren()-1)});
+    })
+    // firebase.database().ref(user + '/Follow/followers').on('value', (data) => {
+    //   this.setState({followerCount: this.getAlphaNumericalCount(data.val().count)});
+    // })
+    // firebase.database().ref(user + '/Follow/following').on('value', (data) => {
+    //   this.setState({followingCount: this.getAlphaNumericalCount(data.val().count)});
+    // })
   }
 
+  getAlphaNumericalCount(count) {
+    var alphaNumCount = '';
+    if(count < 1000)
+    {
+      alphaNumCount = count;
+    }
+    else if(count >= 1000 && count < 1000000)
+    {
+      alphaNumCount = this.getCount(count, 1000, 'K');
+    }
+    else if(count >= 1000000 && count < 100000000)
+    {
+      alphaNumCount = this.getCount(count, 1000000, 'M');
+    }
+    else if(count >= 100000000)
+    {
+      alphaNumCount = this.getCount(count, 100000000, 'B');
+    }
+    return alphaNumCount;
+  }
+
+  //getCount() function is used to get the alphanumerical count from a numberical count
+  //For example, 12000 is returned to 12K, 89999 is returned to 89K+
+  //Input Parameters : 
+  //                   count-numerical count, 
+  //                   target-1000(thousand), 10,00,000(10 lakhs), 10,00,00,000(10 Crores)
+  //                   alpha-K(thousand), M(million), B(billion)
+  //Output: Alphanumerical String
+  getCount(count, target, alpha)
+  {
+    // alphaNumCount = alphaNumCount + Math.floor(count/1000000) + 'M';
+    // if(count > 1000000)
+    // {
+    //   alphaNumCount = alphaNumCount + '+';
+    // }
+
+    var alphaNumCount = Math.floor(count/target) + alpha;
+    if((count%target) !== 0)
+    {
+      alphaNumCount = alphaNumCount + '+';
+    }
+    return alphaNumCount;
+  }
+
+componentDidMount(){
+ 
+}
 
   getImage() {
     let { state } = this
