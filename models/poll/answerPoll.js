@@ -11,7 +11,9 @@ import {StackNavigator} from 'react-navigation';
 // import PollUpdScreen from './poll';
 
 import RadioForm from 'react-native-simple-radio-button';
-
+import MiniOfflineSign from '../../components/offlinePage';
+import offlineHelper from '../../components/offlineHelperFunction';
+import GradientButton from 'react-native-gradient-buttons';
 
 /* declaring answer types */
 var resultTime = [{ label: "Immediate", value: "Immediate" }, { label: "setDate ", value: "setDate" }];
@@ -39,15 +41,31 @@ export default class AnswerPoll extends React.Component {
       private_Flag:'',
       Poll_duration:'',
       value1:'',
-      expirationSelected:false,isLoading:false,datePicked:false
+      expirationSelected:false,isLoading:false,datePicked:false,isConnected1:true,showothertext:true,minAnswer:0,isEditText:true,text: null ,
+      name:null,dontsubmit:true,secondAnswer:true,isEdit:false
 
     }
     //alert(private_Flag);
+    this._handleChange = this._handleChange.bind(this)
   }
   state = {
     isDateTimePickerVisible: false,
     a: true
   };
+  handleConnectivityChange = isConnected1 => {
+    if (isConnected1) {
+      this.setState({ isConnected1 });
+    } else {
+      this.setState({ isConnected1 });
+    }
+  };
+  componentDidMount() {
+    offlineHelper.whenDidMount(this.handleConnectivityChange)
+   }
+ 
+   componentWillUnmount() {
+    offlineHelper.whenUnmount(this.handleConnectivityChange)
+   }
  async componentWillMount(){
   let valuefromScreen1 = this.props.navigation.state.params;
   this.setState({
@@ -56,11 +74,14 @@ export default class AnswerPoll extends React.Component {
     question_Poll:valuefromScreen1.question_Poll,
     category:valuefromScreen1.category,
     answerType:valuefromScreen1.answerType,
-    hash_Tag:valuefromScreen1.hash_Tag
+    // hash_Tag:valuefromScreen1.hash_Tag
   })
-
-  if (this.state.answerType=='')
-  hidetext:false
+  // Alert.alert(valuefromScreen1.answerType);
+  if (valuefromScreen1.answerType=='yes_no')
+  {
+    // Alert.alert('yes_no entered');
+  this.setState({showothertext:false})
+  }
  }
   _showDateTimePicker = () => {
     if (!this.state.a) {
@@ -84,6 +105,31 @@ else{this.setState({datePicked:false})
     
     // ToastAndroid.show(value1.toString(), ToastAndroid.SHORT)
   }}
+  _handleChange(name,value) {
+    // const { value } = e.target;  //it will destructure your name and value where ever you are using _handleChange method.
+    this.setState({
+        [name]: value, // here we are setting the state dynamically.
+
+    });
+   
+    this.check123Entered()
+  // Alert.alert('answer count' +this.state.minAnswer)
+}
+
+check123Entered(){
+  if(!((this.state.answer1==undefined||this.state.answer1=='') && (this.state.answer2==undefined||this.state.answer2=='') && (this.state.answer3==undefined||this.state.answer3=='')))
+    this.setState({
+      isEdit:true // here we are setting the state dynamically.
+    
+  });
+  else{
+    this.setState({
+      isEdit:false // here we are setting the state dynamically.
+    
+  });  
+  }
+}
+
   submitPoll(a1, a2, a3, a4, a5, a6) {
     //console.warn(a1 + this.state.question_Poll);
     if (this.state.anonymous_Flag) author = "Anonymous"
@@ -94,6 +140,26 @@ else{this.setState({datePicked:false})
     else {
       visible = "public"
     }**/
+    if(((a2==undefined||a2=='') || (a1==undefined||a1=='')) && (this.state.answerType=='yes_no'))
+    {
+      
+      this.setState({dontsubmit:false})   
+      
+  
+    }
+    else if((this.state.answerType!='yes_no') && (a3==undefined||a3=='') && (a4==undefined||a4=='') && (a5==undefined||a5=='') && (a6==undefined||a6==''))
+    {
+      this.setState({dontsubmit:false})
+    }
+    
+    else {
+      if ( this.state.answerType=='yes_no')
+    {
+      if(a3==undefined)
+      a3='';
+      a4='';a5='';a6='';
+    }
+      Alert.alert('Submitted',)
     var min = 1;
     var max = 100;
     var rand = Math.round(min + (Math.random() * (max - min)));
@@ -139,6 +205,8 @@ else{this.setState({datePicked:false})
     }).catch((error) => {
       alert(error);
     });
+  
+}
   }
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
@@ -166,78 +234,81 @@ else{this.setState({datePicked:false})
     this.hideStartDateTimePicker();
   };
 
-  back(){
-    // this.props.navigation.navigate('PollUpdScreen')
-  }
+  
 
   render() {
     var { params } = this.props.navigation.state;
     const {navigate}=this.props.navigation;
+    const { goBack } = this.props.navigation;
+    if (!this.state.isConnected1) {
+      return <MiniOfflineSign />;
+    }
     return (
-      <View style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,paddingLeft:20 }}>
- <View><TouchableOpacity><Icon name="chevron-with-circle-left" size={40} style={{paddingTop:10}}  onPress={()=> 
-  // this.goBack }/> 
- navigate('PollMain')} />
+      <View style={{ flex: 1,backgroundColor:'white', paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,paddingLeft:20 }}>
+ <View><TouchableOpacity><Icon name="chevron-with-circle-left" size={40} style={{paddingTop:10}}  onPress={()=>goBack() }/> 
+ {/* navigate('PollMain')} /> */}
  </TouchableOpacity></View>
         <View style={{ flex: 50, padding: 20 }}>
           <Text style={{ paddingLeft: 5 }}> Type your answers </Text>
+          {this.state.dontsubmit?null:<Text style={{ paddingLeft: 5 }}> atleast 3 answers mandatory / for yes or no 3 answers mandatory </Text>}
+          {/* {this.state.secondAnswer?null:<Text style={{ paddingLeft: 5 }}> for yes or no 3 answers mandatory </Text>} */}
           <ScrollView style={{ padding: 5 }}>
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
               editable={true}
               label='answer1'
               placeholder='Option 1'
-              onChangeText={(answer1) => this.setState({ answer1 })}
+              onChangeText={(answer1)=>this._handleChange("answer1",answer1)}
             />
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
-              editable={true}
+              editable={this.state.isEditText1}
               label='answer2'
               placeholder='Option 2'
-              onChangeText={(answer2) => this.setState({ answer2 })}
+              onChangeText={(answer2) => this._handleChange("answer2",answer2)}
             />
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
               editable={true}
               label='answer3'
               placeholder='Option 3'
-              onChangeText={(answer3) => this.setState({ answer3 })}
+              onChangeText={(answer3) => this._handleChange("answer3",answer3)}
             />
+            {this.state.showothertext && this.state.isEdit?
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
-              editable={true}
+              editable={this.state.isEdit}
               label='answer4'
               placeholder='Option 4'
-              onChangeText={(answer4) => this.setState({ answer4 })}
-            />
+              onChangeText={(answer4) => this._handleChange("answer4",answer4)}/> :null}
+              {this.state.showothertext && this.state.isEdit?
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
-              editable={true}
+              editable={this.state.isEdit}
               label='answer5'
               placeholder='Option 5'
-              onChangeText={(answer5) => this.setState({ answer5 })}
-            />
+              onChangeText={(answer5) => this._handleChange("answer5",answer5)}
+            />:null}
+            {this.state.showothertext && this.state.isEdit?
             <TextInput style={{ height: 40, backgroundColor: 'white', margin: 10 }}
-              editable={true}
+              editable={this.state.isEdit}
               label='answer6'
               placeholder='Option 6'
-              onChangeText={(answer6) => this.setState({ answer6 })}
-            />
+              onChangeText={(answer6) => this._handleChange("answer6",answer6)}
+            />:null}
           </ScrollView>
+
+          <View style={{ flex:30,marginTop:20,paddingVertical:40,paddingHorizontal:30}}>
+
+<TextInput style={{ height:60,padding:20,
+ backgroundColor:'white',margin:20}}
+     
+     editable={true}
+     label='hashTag'
+     placeholder='Hash your Label'
+     onChangeText={(hashTag)=>this.setState({hashTag})}
+/>
+
+</View>
         
-        <View style={{ padding:10,
-                            margin:1,justifyContent:'center',flexDirection:"row"}}>
         
-                            <Picker
-		                              style={{width:'50%'}}
-		                              selectedValue={this.state.categoryPickerValue}
-	                              	onValueChange={(itemValue,itemIndex) => this.setState({categoryPickerValue:itemValue})}
-	                          	>
-		                                  
-		                                  <Picker.Item label="Category Of Poll" />
-		                                  <Picker.Item label="movie" value="movie"/>
-                                      <Picker.Item label="tv" value="tv" />
-		                                  <Picker.Item label="science" value="science"/>
-		                        </Picker>
-                        
                     </View>
-                    </View>
-          <View style={{ flex: 25,flexDirection:"row",paddingHorizontal:15 }}>
+          <View style={{ flex: 25,flexDirection:"row",paddingHorizontal:15,paddingVertical:30 }}>
             <Text style={{fontSize:15}}> Result time </Text>
             <RadioForm style={{ paddingHorizontal: 30,paddingTop:0, justifyContent: "space-around" }}
               radio_props={resultTime}
@@ -251,11 +322,6 @@ else{this.setState({datePicked:false})
               disabled={false}
               formHorizontal={true}
             />
-            {/* <TouchableOpacity            
-                disabled={this.state.a}
-                 onPress={this._showDateTimePicker}>
-          <Text>Show DatePicker</Text>
-          </TouchableOpacity>  */}
             <DateTimePicker
               mode={'date'}
               format="YYYY-MM-DD"
@@ -264,10 +330,6 @@ else{this.setState({datePicked:false})
               onCancel={this._hideDateTimePicker}
 
             />
-
-            {/* <TouchableOpacity isVisible={this.state.isDateAndTimeButton} onPress={this.showStartDateTimePicker}>
-          <Text>Show TimePicker</Text>
-        </TouchableOpacity> */}
             <DateTimePicker
               mode={'time'}
               isVisible={this.state.startDateTimePickerVisible}
@@ -277,19 +339,27 @@ else{this.setState({datePicked:false})
             />
             
           </View>
-          {this.state.datePicked ? <Text> Date set {this.state.Poll_duration}</Text> : null}
+          {this.state.datePicked ? <Text style={{padding:30,color:'orange'}}> poll result will be publihed on {this.state.Poll_duration}</Text> : null}
             {/* {this.state.isLoading ? <View><ActivityIndicator size='large' color='#330066' animating/>
       </View>
       : null} */}
         {/* </View> */}
-        <View style={{ padding: 30, alignItems: 'flex-end', justifyContent: 'flex-start' }}>
-          <Button  style ={{}}
-            title="Submit"
-            //onPress={()=> navigate('AnswerMain',this.state.hashTag)} 
-            onPress={() => this.submitPoll(this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5, this.state.answer6)}
-          >
-            <Text style={{ color: 'white' }}> Next </Text>
-          </Button>
+        <View style={{ paddingVertical: 30, alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <GradientButton
+      style={{ marginVertical: 8 }}
+      text="Submit"
+      textSyle={{ fontSize: 5 }}      
+      gradientBegin="#659B80"
+      gradientEnd="#22764C"
+      gradientDirection="diagonal"
+      height={30}
+      width={100}
+      radius={0}
+      impact
+      impactStyle='Light'
+      onPressAction={() => this.submitPoll(this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5, this.state.answer6)}
+    >
+    </GradientButton>
         </View>
       </View>
 
@@ -298,23 +368,3 @@ else{this.setState({datePicked:false})
     );
   }
 }
-
-// const styles = StyleSheet.create({
-//   containerRadio: {
-//     paddingVertical:50,
-//     marginTop:10,
-//     marginLeft:15,
-//     // flex: 1,
-//     justifyContent: 'center'
-
-//     // backgroundColor: '#F5FCFF',
-//   }
-// const NavigationPoll2= StackNavigator({
-  
-//   AnswerMain:{screen: AnswerPoll},
-//   PollMain:{screen: PollUpdScreen},
- 
-
-// });
-
-// export default NavigationPoll2;

@@ -16,7 +16,7 @@ import { NativeEventsReceiver } from 'react-native-navigation/lib/dist/adapters/
 import AnswerPoll from './answerPoll';
 import Icon from 'react-native-vector-icons/Entypo';
 import firebase from '../../firebase/firebase'
-import handleConnectivityClass from '../../components/handleConnectivityClass';
+import GradientButton from 'react-native-gradient-buttons';
 import MiniOfflineSign from '../../components/offlinePage'
 import offlineHelper from '../../components/offlineHelperFunction';
 
@@ -40,7 +40,8 @@ import offlineHelper from '../../components/offlineHelperFunction';
       //data:['MultiChoice','Multiple Answers'],
       checked:0,
       check:false,answerPickerValue:'',anonymousFlag:'',question_Poll:'', isConnected1: true,
-      private_Flag:'',privateCheck:false,anonymousCheck:false,pollValueScreen1:'',answerPickerValue:'',imageSelected:false,isLoading:false
+      private_Flag:'',privateCheck:false,anonymousCheck:false,pollValueScreen1:'',answerPickerValue:'',imageSelected:false,isLoading:false,
+      answerPickerValue:'yes_no',categoryPickerValue:'general',isPollEntered:true
     }
   }
 
@@ -85,12 +86,14 @@ import offlineHelper from '../../components/offlineHelperFunction';
       private_Flag:this.state.privateCheck,
       anonymous_Flag:this.state.anonymousCheck,
       question_Poll:this.state.questionPoll,
-     // category:this.state.categoryPickerValue,
+      category:this.state.categoryPickerValue,   
       answerType:this.state.answerPickerValue,
-      hash_Tag:this.state.hashTag
+      // hash_Tag:this.state.hashTag
     }
     if(this.state.questionPoll==undefined||this.state.questionPoll==''){
-    Alert.alert('Enter Question for Poll')
+    this.setState({
+      isPollEntered:false
+    })
     }
     else{
     navigate('AnswerMain',pollValueScreen1)
@@ -151,9 +154,12 @@ import offlineHelper from '../../components/offlineHelperFunction';
             </View>
             
              <View style={{ flex:50,padding:15}}>
+             {this.state.isPollEntered?null:<Text style={{padding:20}}>Please enter poll</Text>}
                     <TextInput style={{ height:100,justifyContent:'center',margin:20,padding:20,
                             borderWidth:1,backgroundColor:'white',borderRadius:15}}
                                 multiline={true}
+                                // numberOfLines={3}
+                                autoFocus={true}
                                 editable={true}
                                 label='questionPoll'
                                 placeholder='write your poll'
@@ -161,36 +167,39 @@ import offlineHelper from '../../components/offlineHelperFunction';
                                 //onFocus={() => this._onFocus()}
                     />
              </View>
-            <View style={{ flex:30,padding:30,marginTop:20}}>
-
-              <TextInput style={{ height:60,borderBottomColor:'black',borderWidth:1,padding:20,
-               backgroundColor:'white',margin:20}}
-                   
-                   editable={true}
-                   label='hashTag'
-                   placeholder='Hash your Label'
-                   onChangeText={(hashTag)=>this.setState({hashTag})}
-              />
-              
-            </View>
+             <View style={{paddingVertical:20,paddingHorizontal:50,alignItems:'center',justifyContent:'space-between',flexDirection:"row"}}>
+        <Text> Select Category Type </Text>
+          <Picker
+		                              style={{width:'50%'}}
+		                              selectedValue={this.state.categoryPickerValue}
+	                              	onValueChange={(itemValue,itemIndex) => this.setState({categoryPickerValue:itemValue})}
+	                          	>
+		                                  
+                                      {/* <Picker.Item label="Category Of Poll" /> */}
+                                      <Picker.Item label="Genral" value="general"/>
+		                                  <Picker.Item label="movie" value="movie"/>
+                                      <Picker.Item label="tv" value="tv" />
+		                                  <Picker.Item label="science" value="science"/>
+		                        </Picker>
+                        
+                    </View>
             <View style={{flex:100}}>
-            <View style={{padding:50,alignItems:'center',justifyContent:'space-between',flexDirection:"row"}}>
+            <View style={{paddingVertical:20,paddingHorizontal:50,alignItems:'center',justifyContent:'space-between',flexDirection:"row"}}>
             {this.state.imageSelected ? <Text> Image Added</Text> : <Text>Upload Image</Text>}
             {this.state.isLoading ? <View>
         <ActivityIndicator size='large' color='#330066' animating/>
       </View>
       : null}
             <Icon name="camera" size={30} color='#C7B8B1' onPress={this.onChooseImagePress}/></View>
-            <View style={{ padding:10,
-                            margin:1,justifyContent:'center',flexDirection:"row"}}>
-        
+            <View style={{paddingVertical:20,paddingHorizontal:50,alignItems:'center',justifyContent:'space-between',flexDirection:"row"}}>
+        <Text> Select Answer Type </Text>
                             <Picker
 		                              style={{width:'50%'}}
-		                              selectedValue={this.state.categoryPickerValue}
-	                              	onValueChange={(itemValue,itemIndex) => this.setState({categoryPickerValue:itemValue})}
+		                              selectedValue={this.state.answerPickerValue}
+	                              	onValueChange={(itemValue,itemIndex) => this.setState({answerPickerValue:itemValue})}
 	                          	>
 		                                  
-		                                  <Picker.Item label="Answer Type" />
+		                                  {/* <Picker.Item label="Answer Type" /> */}
 		                                  <Picker.Item label="Yes-No" value="yes_no"/>
                                       <Picker.Item label="Choice" value="Choice" />
 		                                  <Picker.Item label="multiple" value="multi answer"/>
@@ -204,15 +213,21 @@ import offlineHelper from '../../components/offlineHelperFunction';
                 <View style={{padding:30,alignItems: 'flex-end',justifyContent:'flex-start'}}>
 
                  
-                  <Button  /*style ={styles.container_button}*/
-                    title="NEXT-"
-                    //onPress={()=> navigate('AnswerMain',this.state.hashTag)} 
-                    onPress={()=> this.validateNext()}
-                  >
-                  <Text style={{color:'white'}}> Next </Text>
-                  </Button>
-                 
-                  
+                  <GradientButton
+      style={{ marginVertical: 8 }}
+      text="NEXT"
+      textSyle={{ fontSize: 5 }}      
+      gradientBegin="#659B80"
+      gradientEnd="#22764C"
+      gradientDirection="diagonal"
+      height={30}
+      width={100}
+      radius={0}
+      impact
+      impactStyle='Light'
+      onPressAction={() => this.validateNext()}
+    >
+    </GradientButton>
                   </View>
               
              
