@@ -51,15 +51,15 @@ export default class Signup extends React.Component {
                 }),
                 firebase.database().ref('users/'+user + '/Poll').update(
                   {
-                    PollCount: 0
+                    dummy: ''
                   }),
                   firebase.database().ref('users/'+user + '/Follow/followers').update(
                     {
-                      Count: 0
+                      dummy: ''
                     }),
                     firebase.database().ref('users/'+user + '/Follow/following').update(
                       {
-                        Count: 0
+                        dummy: ''
                       }
                     ).then(() => {
           }).catch((error) => {
