@@ -26,7 +26,8 @@ export default class UserData extends React.Component {
         PickerValue1: '',
         name: '',
         country: '',
-        
+        about:'',
+        PickerValue2: '',
       })
 
   }
@@ -39,7 +40,7 @@ export default class UserData extends React.Component {
       alert(data);
     }
   }
-  userDetails(name, dob, gender, employment,country) {
+  userDetails(name, dob, gender, employment,country,about,relationship) {
     const { navigate } = this.props.navigation;
     var user = 'users/' + (firebase.auth().currentUser.email);
     user = user.replace(/\./g, "_")
@@ -51,7 +52,9 @@ export default class UserData extends React.Component {
           gender: gender,
           employment: employment,
           country: country,
-          userData: true
+          about:about,
+          userData: true,
+          relationship:relationship
         }
       ).then(() => {
       }).catch((error) => {
@@ -76,6 +79,15 @@ export default class UserData extends React.Component {
             autoCapitalize="none"
             placeholder="Name"
             onChangeText={(name) => this.setState({ name })}
+          />
+        </Item>
+        <Item>
+          <Input
+            label='About'
+            autoCapitalize="none"
+            placeholder="Name"
+            multiline={true}
+            onChangeText={(about) => this.setState({ about })}
           />
         </Item>
         <Item>
@@ -113,7 +125,16 @@ export default class UserData extends React.Component {
           <Picker.Item label="Female" value="Female" />
           <Picker.Item label="Other" value="Other" />
         </Picker>
-
+        <Picker
+          style={{ width: '80%' }}
+          selectedValue={this.state.PickerValue}
+          onValueChange={(itemValue, itemIndex) => this.setState({ PickerValue2: itemValue })}
+        >
+          <Picker.Item label="Relationship" value="" />
+          <Picker.Item label="Single" value="Single" />
+          <Picker.Item label="InRelation" value="InRelation" />
+          <Picker.Item label="Married" value="Married" />
+        </Picker>
         <Picker
           style={{ width: '80%' }}
           selectedValue={this.state.PickerValue1}
@@ -338,7 +359,7 @@ export default class UserData extends React.Component {
           rounded
           primary
           center
-          onPress={() => this.userDetails(this.state.name, this.state.date, this.state.PickerValue, this.state.PickerValue1,this.state.country)}>
+          onPress={() => this.userDetails(this.state.name, this.state.date, this.state.PickerValue, this.state.PickerValue1,this.state.country,this.state.about,this.state.PickerValue2)}>
           <Text>Save</Text>
         </Button>
       </View>

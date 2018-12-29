@@ -11,43 +11,63 @@ export default class SearchItems extends React.Component {
         super(props)
         this.state = {
             data: [null],
-            val: ''
-            
+            val: '',
+            displayPoll: ''
+
         }
-       
+
 
     }
     static navigationOptions = {
         title: null,
-        header: null,
+       
         tabBarIcon: ({ tintColor }) => (
             <Icon name="search" size={20} color={tintColor} />
         )
     }
     componentWillMount() {
-        
 
+        let paramfromOutput = this.props.navigation.state.params;
+        if (paramfromOutput.poll) {
+            this.setState({
+                displayPoll: true
+            })
+        }
     }
 
 
 
     render() {
-        const{navigate}=this.props.navigation;
+        const { navigate } = this.props.navigation;
         let paramfromOutput = this.props.navigation.state.params;
+       
 
         return (
-            
-            <View style={{ paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10 }}>
-                {
-                    paramfromOutput.output.map((output) =>
-                    
-                    <TouchableOpacity onPress={()=>navigate('ShowProfile',{email:output})}>
-                        <CardValue
-                   name={output} 
-                />
-                </TouchableOpacity>)
+            <View>
+                {this.state.displayPoll ?
+                    <View >
+                        {
+                            paramfromOutput.output.map((output) =>
+
+                                <TouchableOpacity>
+                                   <Text>{output}</Text>
+                                </TouchableOpacity>)
+                        }
+                    </View> :
+                    <View >
+                        {
+                            paramfromOutput.output.map((output) =>
+
+                                <TouchableOpacity onPress={() => navigate('ShowProfile', { email: output })}>
+                                    <CardValue
+                                        name={output}
+                                    />
+                                </TouchableOpacity>)
+                        }
+                    </View>
                 }
             </View>
+
         );
     }
 }

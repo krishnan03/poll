@@ -24,7 +24,9 @@ export default class ProfileDetailsScreen extends React.Component {
             PickerValue1: '',
             country: '',
             email:'',
-            isMainUser:false
+            isMainUser:false,
+            about:'',
+            realtionship:''
         }
 
 
@@ -71,11 +73,15 @@ export default class ProfileDetailsScreen extends React.Component {
             var gender = value[user].gender;
             var country = value[user].country;
             var name=value[user].name;
+            var about=value[user].about;
+            var relationship=value[user].relationship;
             this.setState({ date: dobVal });
             this.setState({ PickerValue: gender });
             this.setState({ PickerValue1: employment });
             this.setState({ name: name });
             this.setState({ country: country });
+            this.setState({about:about});
+            this.setState({relationship:relationship});
         })
     }
     componentDidMount(){
@@ -114,8 +120,8 @@ export default class ProfileDetailsScreen extends React.Component {
                     </View>
                     <Card style={{ flex: 1, flexDirection: 'row', borderRadius: 10 }}>
                         <CardItem>
-                            <Text>Name:</Text>
-                            <Text>     {this.state.name}</Text>
+                            <Text>About:</Text>
+                            <Text>     {this.state.about}</Text>
                         </CardItem>
                     </Card>
                     <Card style={{ flex: 1, flexDirection: 'row', borderRadius: 10 }}>
@@ -128,6 +134,12 @@ export default class ProfileDetailsScreen extends React.Component {
                         <CardItem>
                             <Text>Gender:</Text>
                             <Text>     {this.state.PickerValue1}</Text>
+                        </CardItem>
+                    </Card>
+                    <Card style={{ flex: 1, flexDirection: 'row', borderRadius: 10 }}>
+                        <CardItem>
+                            <Text>Relationship:</Text>
+                            <Text>     {this.state.relationship}</Text>
                         </CardItem>
                     </Card>
                     <Card style={{ flex: 1, flexDirection: 'row', borderRadius: 10 }}>
