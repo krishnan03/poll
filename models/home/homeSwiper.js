@@ -16,7 +16,6 @@ import { lucida } from 'expo';
 import {StackNavigator} from 'react-navigation';
 import MenuScreen from '../menu/menu';
 import VerifyProfileScreen from '../menu/verifyProfile';
-import SignOutScreen from '../menu/signout';
 import BugScreen from '../menu/bug';
 import PromotionsScreen from "../menu/promotions";
 import FeedBackScreen from "../menu/feedback";
@@ -180,7 +179,7 @@ const NavigationApp1= StackNavigator({
     Promotion:{screen:PromotionsScreen},
     Bug:{screen:BugScreen},
     Feedback:{screen:FeedBackScreen},
-    Signout:{screen:SignOutScreen},
+   
     PollOptions:{screen:PollOptions},
     ShowPoll:{screen:ShowPoll1}
   });

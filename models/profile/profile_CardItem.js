@@ -21,7 +21,8 @@ export default class CardComponent extends Component {
       color: null,
       email:this.props.email,
       followerCount:'',
-      followingCount:''
+      followingCount:'',
+      pollPosted:''
     }
    
     
@@ -50,6 +51,10 @@ export default class CardComponent extends Component {
         this.setState({ color: 'green' }),
           this.setState({ verified: true });
       }      
+    })
+
+    firebase.database().ref(user + '/Poll').on('value', (data) => {
+      this.setState({pollPosted: this.getAlphaNumericalCount(data.numChildren()-1)});
     })
     firebase.database().ref(user + '/Follow/followers').on('value', (data) => {
       this.setState({followerCount: this.getAlphaNumericalCount(data.numChildren()-1)});
@@ -108,6 +113,7 @@ export default class CardComponent extends Component {
     }
     return alphaNumCount;
   }
+
 
 componentDidMount(){
  
@@ -168,7 +174,7 @@ componentDidMount(){
             <Text style={{ borderBottomWidth: 2, borderBottomColor: this.state.verified === true ? 'green' : null }}>{this.state.name} {renderIf(this.state.verified,
               <Thumbnail style={style.thumbIcon} source={require('../../assets/verify.png')} />
             )}</Text>
-            <Text note>     Total Poll Posted:</Text>
+            <Text note>     Total Poll Posted: {this.state.pollPosted}</Text>
             <Text note>     Total Poll Voted:</Text>
           </Body>
         </Left>

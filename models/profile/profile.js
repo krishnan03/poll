@@ -33,12 +33,10 @@ class ProfileScreen extends React.Component {
   }
   async componentWillMount() {
     let paramfromOutput = this.props.navigation.state.params;
-  
-   try{
+    try{
     this.setState({
       email:paramfromOutput.email
-    })
-     
+    })     
     }catch(err){
     
       this.setState({
@@ -61,7 +59,9 @@ class ProfileScreen extends React.Component {
 
   }
   componentDidMount(){
-    if(this.state.email == firebase.auth().currentUser.email){
+    var currentUser=firebase.auth().currentUser.email
+    if(this.state.email.replace(/\./g, "_") == currentUser.replace(/\./g, "_")){
+
         this.setState({
             isMainUser:true
         })

@@ -1,6 +1,6 @@
 import React from 'react';
 // import App from react-NativeEventsReceiver;
-import { Text,TextInput, View,CheckBox,StyleSheet,ToastAndroid,Picker,Button,AppRegistry } from 'react-native';
+import { Text,TextInput, View,CheckBox,StyleSheet,ToastAndroid,Picker,Button,AppRegistry,Platform,StatusBar} from 'react-native';
 import { Input } from 'native-base';
 import { Dropdown } from 'react-native-material-dropdown';
 import { ScrollView, Directions } from 'react-native-gesture-handler';
@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/Entypo';
  class PollUpdScreen extends React.Component 
 {
   static navigationOptions={title:'Poll',
+  header:null,
   tabBarIcon:({tintColor})=>(
     <Icon name="publish" size={20} color={ tintColor } />
     )
@@ -59,7 +60,7 @@ import Icon from 'react-native-vector-icons/Entypo';
           // };
         return (
     
-          <View style={{ flex:1,marginTop:20,backgroundColor:"#91C4E1" }}>
+          <View style={{ flex:1,paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10,backgroundColor:"#91C4E1" }}>
             <View style={{ flex:5,flexDirection:"row",paddingLeft:15,paddingTop:5,paddingRight:15}}>
                 <View style={{flex:50,flexDirection:"row",justifyContent:"flex-start"}}> 
                 <CheckBox value={this.state.anonymousCheck} onChange={()=> this.toAnonymousCheck()}/>

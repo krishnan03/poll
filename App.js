@@ -8,15 +8,16 @@ import {Container,Content,Header,Form,Item,Button,Label} from 'native-base';
 import {StyleSheet, Text,View} from 'react-native';
 import MenuScreen from './models/menu/menu'
 import UserData from './models/UserData';
+import Loader from './models/loader';
 
 const NavigationApp= StackNavigator({
-
+  Loader:{screen: Loader}, 
   Login:{screen: Login},
+
   SignUp:{screen: Signup},
   forgotPassword:{screen: forgotPassword},
   HomeScreen:{screen: HomeScreen},
   UserData:{screen:UserData},
-  
 });
 
 

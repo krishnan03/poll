@@ -5,6 +5,8 @@ import firebase from '../firebase/firebase';
 import editInput from '../components/input';
 import KeyboardAvoid from 'react-native-keyboard-avoid';
 import {Permissions,Notifications} from 'expo';
+import MiniOfflineSign from '../components/offlinePage'
+import offlineHelper from '../components/offlineHelperFunction';
 
 export default class Login extends React.Component {
   static navigationOptions = {
@@ -15,9 +17,32 @@ export default class Login extends React.Component {
 
     var downoadUrl = ''
     this.state = {
-        userData: false,isloading:false
-    }
+        userData: false,isloading:false,
+        loggedIn:false,
+        isConnected:true
+      }
+      
+
+
   }
+
+
+componentWillMount(){
+  offlineHelper.whenDidMount(this.handleConnectivityChange) 
+}
+componentDidMount(){
+  offlineHelper.whenUnmount(this.handleConnectivityChange) 
+}
+
+handleConnectivityChange = isConnected => {
+  if (isConnected) {
+    this.setState({ isConnected });
+  } else {
+    this.setState({ isConnected });
+  }
+   };
+
+
   loginUser = (email, password) => {
     if(email!=null && password!=null){
     this.setState({
@@ -85,6 +110,8 @@ registerforPushNotification=async(user)=>{
   render() {
     const { navigate } = this.props.navigation;
     return (
+      <View>
+ {this.state.isConnected ?
       <ScrollView>
         <Container style={styles.container}>
           <Form>
@@ -133,6 +160,10 @@ registerforPushNotification=async(user)=>{
           </Form>
         </Container>
         </ScrollView>
+        : <MiniOfflineSign />
+      }
+        </View>
+
     );
 
   };

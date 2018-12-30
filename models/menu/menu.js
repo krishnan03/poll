@@ -1,20 +1,36 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View,Platform,StatusBar,Alert,BackHandler } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { Thumbnail , Card, CardItem,Left, Right} from 'native-base';
-
+import firebase from '../../firebase/firebase';
 export default class MenuScreen extends React.Component {
   static navigationOptions={
-    
+    header:null,
     tabBarIcon:({tintColor})=>(
       <Icon name="chevron-with-circle-right" size={20} color={tintColor} />
     ),
     title:'Menu'
   }
+
+  logout(){
+    firebase.auth().signOut()
+    BackHandler.exitApp()
+  }
+
+  __signOut(){
+    Alert.alert(
+
+      '','Do you want to Signout & Exit',
+      [
+        {text: 'No', },
+        {text:'Yes', onPress: ()=>{ this.logout()} }
+      ]
+    )
+  }
   render() {
     const{navigate}=this.props.navigation;
     return (
-      <View>
+      <View style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10,}}>
         <Card>
             <CardItem>
                 <Left>
@@ -51,13 +67,13 @@ export default class MenuScreen extends React.Component {
                 <Right><Icon name="chevron-with-circle-right" size={20} onPress={() => navigate('Bug')}/></Right>
             </CardItem>
             </Card>
-            <Card>
-            <CardItem>
+            <Card onPress={() => this.__signOut()}>
+            <CardItem onPress={() => this.__signOut()}>
                 <Left>
-                  <Thumbnail style={style.thumbIcon} source={require('../../assets/signout.png')}/>   
-                  <Text>Sign out..</Text>
+                  <Thumbnail style={style.thumbIcon} onPress={() => this.__signOut()} source={require('../../assets/signout.png')}/>   
+                  <Text onPress={() => this.__signOut()}>Sign out..</Text>
                 </Left>
-                <Right><Icon name="chevron-with-circle-right" size={20} onPress={() => navigate('Signout')}/></Right>
+                <Right><Icon name="chevron-with-circle-right" size={20} onPress={() => this.__signOut()}/></Right>
             </CardItem>
             </Card>
      
