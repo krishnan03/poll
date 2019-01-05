@@ -14,14 +14,7 @@ export default class ProfileFollow extends React.Component {
 
 
   async componentWillMount() {
-      var currentUserMail=firebase.auth().currentUser.email.replace(/\./g,"_"); 
-      var userMail = this.state.email.replace(/\./g,"_");
-
-      firebase.database().ref('users/'+currentUserMail+'/Follow/following/'+userMail +'/').on('value', (data) => {
-        this.setState({
-          existingUser: data.val() !== null
-        });
-      })
+     
 
       // firebase.database().ref('users/'+currentUserMail+'/Follow/following/'+userMail).once('value', function (snapshot) {
       //   console.log(snapshot)
@@ -32,6 +25,16 @@ export default class ProfileFollow extends React.Component {
       //       this.setState({existingUser: true});
       //   }
       // });
+    }
+    componentDidMount(){
+      var currentUserMail=firebase.auth().currentUser.email.replace(/\./g,"_"); 
+      var userMail = this.state.email.replace(/\./g,"_");
+
+      firebase.database().ref('users/'+currentUserMail+'/Follow/following/'+userMail +'/').on('value', (data) => {
+        this.setState({
+          existingUser: data.val() !== null
+        });
+      })
     }
 
     follow()

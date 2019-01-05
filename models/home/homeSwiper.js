@@ -25,7 +25,7 @@ import PollOptions from '../../components/pollOptions'
 import ShowPoll1 from "../../components/showPoll1";
 import {Permissions,Notifications} from 'expo';
 import firebase from '../../firebase/firebase';
-
+import UserData from '../UserData'
 var screen = Dimensions.get('window');
 const { width } = Dimensions.get('window')
 
@@ -66,12 +66,25 @@ class HomeSwiper extends Component {
                 require('../../assets/swiper.jpg'),
                 require('../../assets/swiper1.jpg'),
                 require('../../assets/swiper2.jpg')
-            ]
+            ],
+
         }
        
     }
 componentDidMount(){
     
+}
+
+componentWillMount(){
+    firebase.database().ref('users/').on('value', (data) => {
+        var user = firebase.auth().currentUser.email;
+        user = user.replace(/\./g, "_");
+        var value = data.val();
+        const UD = value[user].userData;
+        this.setState({ userData: UD })
+        console.log(this.state.userData);
+       
+      })
 }
 
 registerforPushNotification=async()=>{
@@ -109,7 +122,7 @@ showPoll() {
 }
     render() {
         const{navigate}=this.props.navigation;
-        return <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
+        return  <Container style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight}}>
             <ShowPoll ref={'showPoll'}></ShowPoll>
             <View style={{ flexDirection:"row", justifyContent:"space-between",elevation:10,backgroundColor:'white'}}>
             

@@ -12,20 +12,49 @@ export default class Loader extends React.Component {
   };
   constructor() {
     super()
+    this.state = {
+      userData:''
+    }
+
+   
   }
 
+componentWillMount(){
 
+ 
+}
 componentDidMount(){
     const { navigate } = this.props.navigation;
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log('user avilable')
-          navigate('HomeScreen');
-      } else {
-          console.log('no user')
-         navigate('Login');
+    firebase.database().ref('users/').on('value', (data) => {
+      try{
+      var user = firebase.auth().currentUser.email;
+      user = user.replace(/\./g, "_");
+      var value = data.val();
+       var UD = value[user].userData;
+       firebase.auth().onAuthStateChanged(user => {
+        if (user ) {
+          console.log(UD)
+          if(UD==true){
+            console.log('inside home')
+            navigate('HomeScreen') 
+          }else if(UD==false){
+            console.log('inside user data')
+         navigate('UserData') }
+        } else {
+            console.log('no user')
+           navigate('Login');
+        }
+      });
+      this.setState({ userData: UD },()=>{
+        console.log(this.state.userData);
+      })
+    
+      }catch(error){
+        navigate('Login');
       }
-    });
+    })
+     
+    
 }
 
 

@@ -28,10 +28,16 @@ export default class UserData extends React.Component {
         country: '',
         about:'',
         PickerValue2: '',
+        userData:''
       })
 
   }
   
+  componentWillMount(){
+    
+
+
+  }
   clickme = () => {
     var data = this.state.PickerValue;
     if (data == "") {
@@ -81,15 +87,7 @@ export default class UserData extends React.Component {
             onChangeText={(name) => this.setState({ name })}
           />
         </Item>
-        <Item>
-          <Input
-            label='About'
-            autoCapitalize="none"
-            placeholder="Name"
-            multiline={true}
-            onChangeText={(about) => this.setState({ about })}
-          />
-        </Item>
+        
         <Item>
           <Text style={{ alignSelf: 'flex-start' }}>Date of Birth:</Text>
           <DatePicker

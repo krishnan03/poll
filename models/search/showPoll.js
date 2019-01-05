@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Left, Input, Item, TextInput, Alert, TouchableHighlight, Text } from 'react-native';
+import { View, Left, Input, Item, TextInput, Alert, TouchableHighlight, Text,Alert } from 'react-native';
 import { Container, Content, Form, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Entypo';
 

@@ -20,7 +20,7 @@ export default class SearchItems extends React.Component {
     }
     static navigationOptions = {
         title: null,
-       
+       header:null,
         tabBarIcon: ({ tintColor }) => (
             <Icon name="search" size={20} color={tintColor} />
         )
@@ -43,7 +43,7 @@ export default class SearchItems extends React.Component {
        
 
         return (
-            <View>
+            <View style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10}}>
                 {this.state.displayPoll ?
                     <View >
                         {

@@ -105,8 +105,6 @@ export default class ProfileDetailsScreen extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <UserDetailsModal ref={'addDetails'}></UserDetailsModal>
-                
-
                 <Content style={{paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight + 10}}>
                     <CardComponent  email={this.state.email}/>
                     <View style={container}>
