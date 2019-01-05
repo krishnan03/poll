@@ -27,6 +27,7 @@ export default class ProfileFollow extends React.Component {
       // });
     }
     componentDidMount(){
+      if(firebase.auth().currentUser.isAnonymous){}else{
       var currentUserMail=firebase.auth().currentUser.email.replace(/\./g,"_"); 
       var userMail = this.state.email.replace(/\./g,"_");
 
@@ -36,7 +37,7 @@ export default class ProfileFollow extends React.Component {
         });
       })
     }
-
+  }
     follow()
     {
       var currentUserMail=firebase.auth().currentUser.email.replace(/\./g,"_"); 

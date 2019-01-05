@@ -67,6 +67,7 @@ class HomeSwiper extends Component {
                 require('../../assets/swiper1.jpg'),
                 require('../../assets/swiper2.jpg')
             ],
+            isAnonymous:false
 
         }
        
@@ -76,14 +77,27 @@ componentDidMount(){
 }
 
 componentWillMount(){
+
+   
+    try{
+    if(firebase.auth().currentUser.isAnonymous){
+        this.setState({
+            isAnonymous:true
+        })
+        console.log('user is anonymous')
+    }
+    }catch(err){
+        console.log('error in getting anonymous data')
+    }
     firebase.database().ref('users/').on('value', (data) => {
         var user = firebase.auth().currentUser.email;
+        if(user!=null){
         user = user.replace(/\./g, "_");
         var value = data.val();
         const UD = value[user].userData;
         this.setState({ userData: UD })
         console.log(this.state.userData);
-       
+        }
       })
 }
 

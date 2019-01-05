@@ -1,17 +1,16 @@
 import React, { Component, Keyboard } from 'react';
 import { Container, Content, Header, Form, Item, Button, Label, Input } from 'native-base';
-import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView, ActivityIndicator, Alert,TouchableHighlight,TouchableOpacity,Image,Dimensions,Linking} from 'react-native';
 //import firebase from '../firebase/firebase';
 import editInput from '../components/input';
 import KeyboardAvoid from 'react-native-keyboard-avoid';
 import { Permissions, Notifications } from 'expo';
 import MiniOfflineSign from '../components/offlinePage'
 import offlineHelper from '../components/offlineHelperFunction';
-import { AccessToken, LoginManager, LoginButton } from 'react-native-fbsdk';
 import * as firebase from "firebase";
+import Icon from 'react-native-vector-icons/Entypo';
 
 const firebaseConfig = {
-  // ADD YOUR FIREBASE CREDENTIALS
   apiKey: "AIzaSyDtdkB6WXrgXBQrqpngZZqOcmEjjyQc0_I",
   authDomain: "nadak-a6ff4.firebaseapp.com",
   databaseURL: "https://nadak-a6ff4.firebaseio.com",
@@ -23,7 +22,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp({});
 }
 
-
+var screen=Dimensions.get('window');
 export default class Login extends React.Component {
   static navigationOptions = {
     header: null
@@ -79,8 +78,6 @@ export default class Login extends React.Component {
          
         })
         this.registerforPushNotification(user);
-
-
       }).catch(function (e) {
         alert(e);
       });
@@ -116,7 +113,9 @@ export default class Login extends React.Component {
 
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
-    firebase.database().ref('users/gplkrishnan320@gmail_com').update(
+    var user = firebase.auth().currentUser.email;
+    user = user.replace(/\./g, "_");
+    firebase.database().ref('users/'+user).update(
       {
         expotoken: token
       }
@@ -125,8 +124,32 @@ export default class Login extends React.Component {
       alert(error);
     });
   }
-  async loginWithFacebook() {
 
+  __loginAnonymously(){
+    const { navigate } = this.props.navigation;
+    this.setState({
+      isloading: true
+    })
+    firebase.auth().signInAnonymously().then(user => {
+      console.log(user)
+
+      firebase.database().ref('users/anonymous_user_'+firebase.auth().currentUser.uid).set(
+        {
+         anonymous_user:true
+        })
+        navigate('HomeScreen');
+    }).catch(function(error) {
+      
+      // ...
+    });
+  }
+
+
+  async loginWithFacebook() {
+    const { navigate } = this.props.navigation;
+    this.setState({
+      isloading: true
+    })
     //ENTER YOUR APP ID 
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('328620027736825', { permissions: ['public_profile', 'email'] })
 
@@ -138,13 +161,14 @@ export default class Login extends React.Component {
      
  
         firebase.database().ref('users/').on('value', (data) => {
-          
+        
           var user = firebase.auth().currentUser.email;
-          
+          if(user !=null && user !=''){
           user = user.replace(/\./g, "_");
           var value = data.val();
           try{
           const UD = value[user].userData;
+          navigate('HomeScreen');
           }
           catch(error){
             firebase.database().ref('users/'+user).set(
@@ -169,7 +193,7 @@ export default class Login extends React.Component {
                       })
           }
           
-
+        }
 
         })
         
@@ -187,6 +211,12 @@ export default class Login extends React.Component {
         {this.state.isConnected ?
           <ScrollView>
             <Container style={styles.container}>
+            <View>
+              <Image  style={{width: screen.width, height: 80,justifyContent:'center'}}
+          source={{uri: 'https://firebasestorage.googleapis.com/v0/b/nadak-a6ff4.appspot.com/o/poller_admin%2Fheader1.png?alt=media&token=e9affae2-3be8-4621-ad95-d57e3e779079'}}
+        />
+          <Text style={{justifyContent:'center',alignSelf:'center',alignItems:'center',fontStyle:'italic'}}>     Recorder of people's opinion</Text>
+              </View>
               <Form>
                 <Item floatingLabel>
                   <Label>Email</Label>
@@ -205,13 +235,13 @@ export default class Login extends React.Component {
                     onChangeText={(password) => this.setState({ password })}
                     onPress={() => this._onPress()} />
                 </Item>
-                <Button style={{ marginTop: 10 }}
+                <Button style={{ marginTop: 10,backgroundColor:'orange' }}
                   full
                   rounded
                   success
                   onPress={() => this.loginUser(this.state.email, this.state.password)}
                 >
-                  <Text style={{ color: 'white' }}>Login</Text>
+                  <Text style={{ color: 'black' }}>Login</Text>
                 </Button>
                 {
                   this.state.isloading ? <View>
@@ -219,33 +249,54 @@ export default class Login extends React.Component {
                   </View>
                     : null
                 }
-                <Button style={{ marginTop: 10 }}
+                <Text style={{ marginTop: 10, textDecorationLine: 'underline', alignSelf: 'center' }}
+                  onPress={() => navigate('forgotPassword')}>Forgot Password?</Text>
+
+                 
+                <Button style={{ marginTop: 10,backgroundColor:'orange' }}
                   full
                   rounded
                   primary
                   onPress={() => navigate('SignUp')}
                 >
-                  <Text style={{ color: 'white' }}>Sign up</Text>
+                  <Text style={{ color: 'black' }}>Sign up</Text>
                 </Button>
-                <Text style={{ marginTop: 30, textDecorationLine: 'underline', alignSelf: 'center' }}
-                  onPress={() => navigate('forgotPassword')}>Forgot Password?</Text>
-
-              </Form>
-              <View>
-
-                <Button style={{ marginTop: 10 }}
+                <View style={{ flex: 1,
+        flexDirection: 'row',marginTop: 10,justifyContent:'space-evenly'}}>
+                    <Button style={{ marginTop: 10 }}
                   full
                   rounded
                   primary
                   onPress={() => this.loginWithFacebook()}
                 >
-                  <Text style={{ color: 'white' }}> Login With Facebook</Text>
+                  <Text style={{ color: 'white' }}>     Login with <Icon name="facebook" size={20}/>     </Text>
                 </Button>
-              </View>
+               
+                <Button style={{ marginTop: 10 }}
+                 full
+                 rounded
+                 primary
+                 onPress={() => this.__loginAnonymously()}
+                 >
+                <Text style={{color: 'white', alignSelf: 'center' }}>     Login as Guest!!     </Text>
+                  </Button>
+                  
+                  </View>
+
+              </Form>
+              
             </Container>
           </ScrollView>
           : <MiniOfflineSign />
         }
+     
+        <TouchableOpacity onPress={() => Linking.openURL('http://www.zhagara.com')}>
+<Text style={{marginBottom:0,justifyContent:'center',alignSelf:'center'}}
+
+>Developed by Zhagara @www.zhagara.com</Text>
+</TouchableOpacity>
+
+
       </View>
 
     );

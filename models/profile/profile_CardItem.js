@@ -30,7 +30,7 @@ export default class CardComponent extends Component {
   }
 
   async componentWillMount() {
-    
+    if(this.state.email != null && this.state.email != ''){
     const { status } = await Permissions.askAsync(Permissions.CAMERA, Permissions.CAMERA_ROLL);
     firebase.database().ref('users/').on('value', (data) => {
       var user = this.state.email;
@@ -68,6 +68,7 @@ export default class CardComponent extends Component {
     // firebase.database().ref(user + '/Follow/following').on('value', (data) => {
     //   this.setState({followingCount: this.getAlphaNumericalCount(data.val().count)});
     // })
+  }
   }
 
   getAlphaNumericalCount(count) {
