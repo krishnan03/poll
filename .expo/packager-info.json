@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 38128,
-  "expoServerNgrokUrl": "https://s2-wrr.gplkrishnan320.poll.exp.direct",
-  "packagerNgrokUrl": "https://packager.s2-wrr.gplkrishnan320.poll.exp.direct",
-  "ngrokPid": 38146
+  "packagerPort": 19004,
+  "packagerPid": 1156,
+  "expoServerNgrokUrl": "https://34-pi8.anonymous.poll.exp.direct",
+  "packagerNgrokUrl": "https://packager.34-pi8.anonymous.poll.exp.direct",
+  "ngrokPid": 17612
 }
